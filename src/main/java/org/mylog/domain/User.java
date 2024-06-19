@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Builder
@@ -47,4 +49,10 @@ public class User {
     @OneToOne
     @JoinColumn(name = "blog_id", nullable = false)
     private Blog blog;
+
+    @OneToMany(mappedBy = "fromUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Follow> followings = new HashSet<>();
+
+    @OneToMany(mappedBy = "toUser", fetch =  FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Follow> followers = new HashSet<>();
 }
