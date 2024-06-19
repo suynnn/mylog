@@ -45,6 +45,6 @@ public class User {
     private Boolean isWithdrawal;
 
     @OneToOne
-    @JoinColumn(name = "blog_id")
+    @JoinColumn(name = "blog_id", nullable = false)
     private Blog blog;
 }
