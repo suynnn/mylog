@@ -43,4 +43,8 @@ public class User {
 
     @Column(nullable = false, name = "is_withdrawal")
     private Boolean isWithdrawal;
+
+    @OneToOne
+    @JoinColumn(name = "blog_id")
+    private Blog blog;
 }
