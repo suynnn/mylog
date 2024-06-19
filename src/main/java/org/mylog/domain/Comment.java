@@ -8,26 +8,28 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Builder
 @Entity
-@Table(name = "posts")
+@Table(name = "comments")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
-    private Long postId;
-
-    @Column(nullable = false, length = 200)
-    private String title;
+    @Column(name = "comment_id")
+    private Long commentId;
 
     @Column(nullable = false)
     private String content;
+
+    @Column(nullable = false, name = "class")
+    private int commentClass;
+
+    @Column(name = "parent_id")
+    private Long parentId;
 
     @CreatedDate
     @Column(nullable = false, name = "created_at")
@@ -36,26 +38,14 @@ public class Post {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(nullable = false, name = "is_temp")
-    private Boolean isTemp;
-
-    @Column(nullable = false, name = "is_private")
-    private Boolean isPrivate;
-
     @Column(nullable = false, name = "is_deleted")
     private Boolean isDeleted;
-
-    @Column(nullable = false, name = "thumbnail_url")
-    private String thumbnailUrl;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "series_id")
-    private Series series;
-
-    @OneToMany(mappedBy = "post")
-    private List<Comment> comments;
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
 }
