@@ -55,4 +55,7 @@ public class User {
 
     @OneToMany(mappedBy = "toUser", fetch =  FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Follow> followers = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<Like> likes = new HashSet<>();
 }
