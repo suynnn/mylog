@@ -64,4 +64,7 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private Set<Like> likes = new HashSet<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<PostImage> postImages = new ArrayList<>();
 }
