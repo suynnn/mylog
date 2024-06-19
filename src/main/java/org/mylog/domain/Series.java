@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Builder
 @Entity
@@ -25,4 +28,7 @@ public class Series {
     @ManyToOne
     @JoinColumn(name = "blog_id", nullable = false)
     private Blog blog;
+
+    @OneToMany(mappedBy = "series")
+    private List<Post> posts = new ArrayList<>();
 }
