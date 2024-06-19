@@ -5,26 +5,21 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.HashSet;
-import java.util.Set;
+import org.mylog.enums.RoleEnum;
 
 @Getter
 @Builder
 @Entity
-@Table(name = "tags")
+@Table(name = "roles")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Tag {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tag_id")
-    private Long tagId;
+    @Column(name = "role_id")
+    private Long roleId;
 
-    @Column(nullable = false, unique = true)
-    private String name;
-
-    @OneToMany(mappedBy = "tag")
-    private Set<PostTag> postTags = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    private RoleEnum roleEnum;
 }
