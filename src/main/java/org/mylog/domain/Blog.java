@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @Builder
 @Entity
@@ -37,4 +39,7 @@ public class Blog {
 
     @OneToOne(mappedBy = "blog")
     private User user;
+
+    @OneToMany(mappedBy = "blog")
+    private List<Series> seriesList;
 }
