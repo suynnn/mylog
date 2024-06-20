@@ -1,8 +1,8 @@
 package org.mylog.service;
 
-import org.mylog.dto.UserResisterDto;
+import org.mylog.dto.UserRegisterDto;
 
 public interface UserService {
 
-    Long registerUser(UserResisterDto dto);
+    Long registerUser(UserRegisterDto dto);
 }
