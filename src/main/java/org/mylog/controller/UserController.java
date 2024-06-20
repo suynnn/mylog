@@ -1,11 +1,13 @@
 package org.mylog.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mylog.dto.UserRegisterDto;
 import org.mylog.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,9 +29,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("userRegisterDto") UserRegisterDto userRegisterDto) {
+    public String registerUser(@Valid @ModelAttribute("userRegisterDto") UserRegisterDto userRegisterDto,
+                               BindingResult bindingResult) {
 
-        log.info("userRegisterDto : {}", userRegisterDto);
+        if (bindingResult.hasErrors()) {
+            return "user/user-register";
+        }
 
         userService.registerUser(userRegisterDto);
 
