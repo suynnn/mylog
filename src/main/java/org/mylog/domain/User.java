@@ -48,7 +48,7 @@ public class User {
     private Boolean isWithdrawal;
 
     @OneToOne
-    @JoinColumn(name = "blog_id", nullable = false)
+    @JoinColumn(name = "blog_id")
     private Blog blog;
 
     @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL, orphanRemoval = true)
