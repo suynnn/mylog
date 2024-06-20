@@ -36,7 +36,7 @@ BE 1명
 <br>
 
 # 🗂️ ERD 설계
-![image](https://github.com/suynnn/mylog/assets/68938259/1792f304-a127-4e71-af80-0d35cff483f1)
+![img.png](img.png)
 
 <br>
 
