@@ -31,7 +31,6 @@ public class Comment {
     @Column(name = "parent_id")
     private Long parentId;
 
-    @CreatedDate
     @Column(nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
@@ -41,11 +40,11 @@ public class Comment {
     @Column(nullable = false, name = "is_deleted")
     private Boolean isDeleted;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 }

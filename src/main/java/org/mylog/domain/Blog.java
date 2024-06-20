@@ -37,7 +37,7 @@ public class Blog {
     @Column(nullable = false, name = "is_deleted")
     private Boolean isDeleted;
 
-    @OneToOne(mappedBy = "blog")
+    @OneToOne(mappedBy = "blog", fetch = FetchType.LAZY)
     private User user;
 
     @OneToMany(mappedBy = "blog")

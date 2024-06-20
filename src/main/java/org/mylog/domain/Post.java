@@ -32,7 +32,6 @@ public class Post {
     @Column(nullable = false)
     private String content;
 
-    @CreatedDate
     @Column(nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
@@ -51,11 +50,11 @@ public class Post {
     @Column(nullable = false, name = "thumbnail_url")
     private String thumbnailUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "series_id")
     private Series series;
 

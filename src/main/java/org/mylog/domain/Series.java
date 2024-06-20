@@ -25,7 +25,7 @@ public class Series {
     @Column(nullable = false, length = 30)
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "blog_id", nullable = false)
     private Blog blog;
 

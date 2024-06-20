@@ -41,7 +41,6 @@ public class User {
     @Column(nullable = false, length = 20)
     private String nickname;
 
-    @CreatedDate // 엔티티가 생성되어 저장될 때 자동으로 시간 저장
     @Column(nullable = false, updatable = false, name = "created_at") // updatable = false : column 수정 시 값 변경을 막는다
     private LocalDateTime createdAt;
 
@@ -52,10 +51,10 @@ public class User {
     @JoinColumn(name = "blog_id", nullable = false)
     private Blog blog;
 
-    @OneToMany(mappedBy = "fromUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Follow> followings = new HashSet<>();
 
-    @OneToMany(mappedBy = "toUser", fetch =  FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Follow> followers = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
