@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -25,7 +25,7 @@ public class UserController {
     public String registerUserForm(Model model) {
         model.addAttribute("userRegisterDto", new UserRegisterDto());
 
-        return "user/user-register";
+        return "user/user-register-form";
     }
 
     @PostMapping("/register")
@@ -33,7 +33,7 @@ public class UserController {
                                BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return "user/user-register";
+            return "user/user-register-form";
         }
 
         userService.registerUser(userRegisterDto);
