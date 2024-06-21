@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.mylog.domain.Role;
 import org.mylog.domain.User;
 import org.mylog.domain.UserRole;
-import org.mylog.dto.UserRegisterDto;
+import org.mylog.dto.user.UserRegisterDto;
 import org.mylog.repository.UserRepository;
 import org.mylog.service.RoleService;
 import org.mylog.service.UserRoleService;

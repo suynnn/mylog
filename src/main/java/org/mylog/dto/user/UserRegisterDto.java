@@ -1,4 +1,4 @@
-package org.mylog.dto;
+package org.mylog.dto.user;
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;

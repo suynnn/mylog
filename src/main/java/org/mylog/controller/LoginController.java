@@ -2,11 +2,10 @@ package org.mylog.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mylog.domain.User;
-import org.mylog.dto.LoginDto;
+import org.mylog.dto.user.LoginDto;
 import org.mylog.etc.ConstValues;
 import org.mylog.service.LoginService;
 import org.springframework.stereotype.Controller;

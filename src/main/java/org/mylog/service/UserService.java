@@ -1,7 +1,7 @@
 package org.mylog.service;
 
 import org.mylog.domain.User;
-import org.mylog.dto.UserRegisterDto;
+import org.mylog.dto.user.UserRegisterDto;
 
 public interface UserService {
 

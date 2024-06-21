@@ -3,7 +3,7 @@ package org.mylog.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mylog.dto.UserRegisterDto;
+import org.mylog.dto.user.UserRegisterDto;
 import org.mylog.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
