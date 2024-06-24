@@ -15,5 +15,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/", "/users/register", "/login",
                         "/logout", "/css/**", "/*.ico", "/error");
+
     }
 }

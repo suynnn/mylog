@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mylog.domain.User;
 import org.mylog.dto.user.LoginDto;
+import org.mylog.dto.user.LoginUserContext;
 import org.mylog.etc.ConstValues;
 import org.mylog.service.LoginService;
 import org.springframework.stereotype.Controller;
@@ -45,7 +46,19 @@ public class LoginController {
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute(ConstValues.SESSION_LOGIN_USER, loginUser.getUserId());
+
+        LoginUserContext loginUserContext = LoginUserContext
+                .builder()
+                .userId(loginUser.getUserId())
+                .id(loginUser.getId())
+                .name(loginUser.getName())
+                .email(loginUser.getEmail())
+                .nickname(loginUser.getNickname())
+                .blog(loginUser.getBlog())
+                .userRoles(loginUser.getUserRoles())
+                .build();
+
+        session.setAttribute(ConstValues.SESSION_LOGIN_USER, loginUserContext);
 
         return "redirect:" + redirectURL;
     }
