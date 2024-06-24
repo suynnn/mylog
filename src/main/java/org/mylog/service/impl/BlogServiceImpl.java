@@ -3,11 +3,13 @@ package org.mylog.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.mylog.domain.Blog;
 import org.mylog.dto.blog.BlogMakeDto;
+import org.mylog.file.FileStore;
 import org.mylog.repository.BlogRepository;
 import org.mylog.service.BlogService;
 import org.mylog.service.UserService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -15,9 +17,7 @@ public class BlogServiceImpl implements BlogService {
 
     private final BlogRepository blogRepository;
     private final UserService userService;
-
-    @Value("{file.dir}")
-    private String fileDir;
+    private final FileStore fileStore;
 
     @Override
     public Long makeBlog(BlogMakeDto dto) {
@@ -27,7 +27,7 @@ public class BlogServiceImpl implements BlogService {
         if (dto.getProfileImg().isEmpty()) {
             profileImg = "basic-profile.png";
         } else {
-            profileImg = dto.getProfileImg();
+            profileImg = fileStore.storeFile(dto.getProfileImg()).getStoreFileName();
         }
 
         Blog blog = Blog.builder()
