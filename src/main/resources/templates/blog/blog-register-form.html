@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>블로그 개설</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons CSS (optional) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <style>
+    body {
+      background-color: #fff;
+      color: #333;
+    }
+    .form-container {
+      margin-top: 50px;
+      padding: 30px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .form-label {
+      font-weight: bold;
+    }
+    .form-control {
+      border: 1px solid #333;
+    }
+    .btn-primary {
+      background-color: #333;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #555;
+    }
+    h1, h3 {
+      text-align: center;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>블로그 개설</h1>
+  <div class="row justify-content-center">
+    <div class="col-lg-6 form-container">
+      <form method="post" th:action="@{/blogs/register}" th:object="${blogMakeDto}" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="title" class="form-label">제목</label>
+          <input type="text" id="title" th:field="*{title}" class="form-control" required>
+          <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></div>
+        </div>
+        <div class="mb-3">
+          <label for="intro" class="form-label">한 줄 소개</label>
+          <input type="text" id="intro" th:field="*{intro}" class="form-control" required>
+          <div th:if="${#fields.hasErrors('intro')}" th:errors="*{intro}" class="text-danger"></div>
+        </div>
+        <div class="mb-3">
+          <label for="profileImg" class="form-label">프로필 등록</label>
+          <input type="file" id="profileImg" th:field="*{profileImg}" class="form-control" required>
+          <div th:if="${#fields.hasErrors('profileImg')}" th:errors="*{profileImg}" class="text-danger"></div>
+        </div>
+        <h3>소셜 정보</h3>
+        <div class="mb-3">
+          <label for="email" class="form-label">이메일</label>
+          <input type="text" id="email" th:field="*{email}" class="form-control">
+          <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></div>
+        </div>
+        <div class="mb-3">
+          <label for="github" class="form-label">깃허브</label>
+          <input type="text" id="github" th:field="*{github}" class="form-control">
+          <div th:if="${#fields.hasErrors('github')}" th:errors="*{github}" class="text-danger"></div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">등록하기</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JavaScript Bundle (Popper included) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

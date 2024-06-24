@@ -8,6 +8,8 @@
     <h1>홈페이지</h1>
     <div th:if="${loginUser != null}">
         <h2 th:text="${loginUser.nickname}"></h2>
+        <button th:if="${!hasBlog}" th:onclick="|location.href='@{/blogs/register}'|">블로그 개설</button>
+        <button th:if="${hasBlog}" th:onclick="|location.href='@{/blogs/}|+ ${loginUser.blog.getBlogId()} + |'|">내 블로그</button>
         <button th:onclick="|location.href='@{/logout}'|">로그아웃</button>
     </div>
     <div th:if="${loginUser == null}">

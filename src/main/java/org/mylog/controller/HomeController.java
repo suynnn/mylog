@@ -38,7 +38,15 @@ public class HomeController {
             return "index";
         }
 
+        boolean hasBlog;
+        if (loginUser.getBlog() == null) {
+            hasBlog = false;
+        } else {
+            hasBlog = true;
+        }
+
         model.addAttribute("loginUser", loginUser);
+        model.addAttribute("hasBlog", hasBlog);
         return "index";
     }
 }

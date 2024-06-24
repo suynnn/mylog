@@ -8,8 +8,9 @@ import org.mylog.repository.BlogRepository;
 import org.mylog.service.BlogService;
 import org.mylog.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriUtils;
 
-import java.util.UUID;
+import java.nio.charset.StandardCharsets;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class BlogServiceImpl implements BlogService {
         }
 
         Blog blog = Blog.builder()
-                .title(dto.getTitle())
+                .title(UriUtils.encode(dto.getTitle(), StandardCharsets.UTF_8))
                 .intro(dto.getIntro())
                 .profileImg(profileImg)
                 .email(dto.getEmail())
