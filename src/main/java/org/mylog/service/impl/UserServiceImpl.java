@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
         Long id = userRepository.save(user).getUserId();
 
-        Role role = roleService.findRoleById(1L);
+        Role role = roleService.findRoleById(2L);
 
         UserRole userRole = UserRole.builder()
                         .user(user)

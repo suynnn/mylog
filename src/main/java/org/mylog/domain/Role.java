@@ -21,5 +21,6 @@ public class Role {
     private Long roleId;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "role_enum", nullable = false)
     private RoleEnum roleEnum;
 }

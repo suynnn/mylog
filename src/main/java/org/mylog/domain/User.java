@@ -55,6 +55,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Like> likes = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserRole> userRoles = new ArrayList<>();
 }
