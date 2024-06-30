@@ -6,6 +6,7 @@
 </head>
 <body>
     <h1>홈페이지</h1>
+    <!-- TODO 해결하기 -->
     <div sec:authorize="isAuthenticated()">
         <h2><span sec:authentication="name"></span></h2>
         <button th:if="${!hasBlog}" th:onclick="|location.href='@{/blogs/register}'|">블로그 개설</button>
