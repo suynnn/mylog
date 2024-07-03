@@ -3,8 +3,7 @@ package org.mylog.domain.user.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.mylog.domain.blog.domain.Blog;
-import org.mylog.domain.user.domain.UserRole;
+import org.mylog.domain.user.domain.Role;
 
 import java.util.List;
 
@@ -16,7 +15,5 @@ public class LoginUserContext {
     private String id;
     private String name;
     private String email;
-    private String nickname;
-    private Blog blog;
-    private List<UserRole> userRoles;
+    private List<Role> roles;
 }

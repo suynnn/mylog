@@ -25,13 +25,13 @@ public class BlogController {
     @GetMapping("/register")
     public String registerBlogForm(Model model,
                                    HttpServletRequest request) {
-        LoginUserContext userContext = getLoginUserContext(request);
-
-        if (userContext == null) return "redirect:/";
-
-        if (userContext.getBlog() != null) {
-            return "redirect:/";
-        }
+//        LoginUserContext userContext = getLoginUserContext(request);
+//
+//        if (userContext == null) return "redirect:/";
+//
+//        if (userContext.getBlog() != null) {
+//            return "redirect:/";
+//        }
 
         model.addAttribute("blogMakeDto", new BlogMakeDto());
 

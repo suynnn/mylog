@@ -1,7 +1,10 @@
 package org.mylog.global.config;
 
 import lombok.RequiredArgsConstructor;
-import org.mylog.global.security.CustomUserDetailsService;
+import org.mylog.global.jwt.exception.CustomAuthenticationEntryPoint;
+import org.mylog.global.jwt.filter.JwtAuthenticationFilter;
+import org.mylog.global.jwt.service.ReissueToken;
+import org.mylog.global.jwt.util.JwtTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,42 +12,54 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomUserDetailsService customUserDetailsService;
+    private final JwtTokenizer jwtTokenizer;
+    private final ReissueToken reissueToken;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityLoginFilterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(request -> request
-                .requestMatchers("/", "/users/register").permitAll()
+                .requestMatchers("/", "/users/register", "/login", "/refreshToken", "/login-form").permitAll()
                 .anyRequest()
                 .authenticated())
 
-            .formLogin(form -> form
-                    .loginPage("/loginForm")
-                    .loginProcessingUrl("/login")
-                    .defaultSuccessUrl("/") // 첫 번째 파라미터는 기본 URL, 두 번째 파라미터 true는 항상 이 URL로 리디렉트
-                    .permitAll())
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenizer, reissueToken), UsernamePasswordAuthenticationFilter.class)
 
-            .logout(logout-> logout
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/"))
-
-            .userDetailsService(customUserDetailsService)
-
+            .formLogin(formLogin -> formLogin.disable())
             .csrf(csrf -> csrf.disable())
+            .httpBasic(httpBasic -> httpBasic.disable())
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-            .sessionManagement(sessionManagement -> sessionManagement
-                            .maximumSessions(1) // 동시 접속 허용 개수
-                            .maxSessionsPreventsLogin(true) // 동시 로그인을 차단 default - false (먼저 로그인한 사용자 차단)
-                                                            // true - 애초에 허용개수를 초과하는 사용자는 로그인이 안되도록 차단
-            );
+            .exceptionHandling(exception -> exception
+                    .authenticationEntryPoint(customAuthenticationEntryPoint));
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(){
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        config.setAllowedMethods(List.of("GET", "POST", "DELETE", "PUT", "PATCH", "OPTION"));
+
+        source.registerCorsConfiguration("/**", config);
+
+        return source;
     }
 
     @Bean

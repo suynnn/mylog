@@ -9,13 +9,11 @@
     <!-- TODO 해결하기 -->
     <div sec:authorize="isAuthenticated()">
         <h2><span sec:authentication="name"></span></h2>
-        <button th:if="${!hasBlog}" th:onclick="|location.href='@{/blogs/register}'|">블로그 개설</button>
-        <button th:if="${hasBlog}" th:onclick="|location.href='@{/blogs/@[[${loginUser.id}]]}'|">내 블로그</button>
         <button th:onclick="|location.href='@{/logout}'|">로그아웃</button>
     </div>
     <div sec:authorize="isAnonymous()">
         <button th:onclick="|location.href='@{/users/register}'|">회원가입</button>
-        <button th:onclick="|location.href='@{/login}'|">로그인</button>
+        <button th:onclick="|location.href='@{/login-form}'|">로그인</button>
     </div>
 
 </body>

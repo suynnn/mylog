@@ -8,4 +8,6 @@ public interface UserService {
     Long registerUser(UserRegisterDto dto);
 
     User findUserByUserId(Long id);
+
+    User findUserByUsername(String username);
 }
