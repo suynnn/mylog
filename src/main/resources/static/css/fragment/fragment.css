@@ -32,3 +32,12 @@ body {
 .button-icon-container a {
     margin-left: 10px;
 }
+
+.container {
+    max-width: 1420px;
+}
+
+.navbar-hidden {
+    transition: top 0.3s;
+    top: -80px;
+}
