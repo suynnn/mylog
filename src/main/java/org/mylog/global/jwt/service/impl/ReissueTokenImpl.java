@@ -5,7 +5,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mylog.global.jwt.service.BlacklistService;
+import org.mylog.domain.user.domain.User;
+import org.mylog.domain.user.repository.UserRepository;
 import org.mylog.global.jwt.service.RefreshTokenService;
 import org.mylog.global.jwt.service.ReissueToken;
 import org.mylog.global.jwt.util.JwtTokenizer;
@@ -18,14 +19,14 @@ import org.springframework.stereotype.Component;
 public class ReissueTokenImpl implements ReissueToken {
 
     private final RefreshTokenService refreshTokenService;
-    private final BlacklistService blacklistService;
     private final JwtTokenizer jwtTokenizer;
+    private final UserRepository userRepository;
 
     // accessToken이 만료되면 refreshToken으로 다시 accessToken을 재발급하는 메서드
     public String reissueAccessToken(HttpServletResponse response,
                                      String refreshToken) {
 
-        if (!verifyRefreshToken(refreshToken)) {
+        if (!verifyRefreshToken(refreshToken) || jwtTokenizer.isRefreshTokenExpired(refreshToken)) {
 
             Cookie cookie = new Cookie("refreshToken", "");
             cookie.setMaxAge(0);
@@ -38,20 +39,21 @@ public class ReissueTokenImpl implements ReissueToken {
             response.addCookie(cookie);
             response.addCookie(accessCookie);
 
-            return "fail";
+            return "";
         }
 
         Claims claims = jwtTokenizer.parseRefreshToken(refreshToken);
 
-        String accessToken = jwtTokenizer.createAccessToken(
-                claims.get("userId", Long.class),
-                claims.get("email", String.class),
-                claims.get("name", String.class),
-                claims.get("username", String.class),
-                claims.get("roles", java.util.List.class)
-        );
+        User user = userRepository.findById(claims.get("userId", Long.class)).orElseThrow(null);
 
-        log.info("새로 생성된 accessToken : {}", accessToken);
+        String accessToken = jwtTokenizer.createAccessToken(
+                user.getUserId(),
+                user.getEmail(),
+                user.getName(),
+                user.getId(),
+                user.getUserRoles()
+                        .stream().map(role -> role.getRole().getRoleEnum().name()).toList()
+        );
 
         Cookie accessTokenCookie = new Cookie("accessToken", accessToken);
         accessTokenCookie.setHttpOnly(true);
@@ -69,8 +71,6 @@ public class ReissueTokenImpl implements ReissueToken {
             return false;
         }
         else if (refreshTokenService.findRefreshToken(refreshToken).isEmpty()) {
-            return false;
-        } else if(blacklistService.findBlacklistByRefreshToken(refreshToken).isPresent()) {
             return false;
         }
 

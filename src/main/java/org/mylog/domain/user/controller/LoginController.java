@@ -57,13 +57,7 @@ public class LoginController {
                 roles
         );
 
-        String refreshToken = jwtTokenizer.createRefreshToken(
-                user.getUserId(),
-                user.getEmail(),
-                user.getName(),
-                user.getId(),
-                roles
-        );
+        String refreshToken = jwtTokenizer.createRefreshToken(user.getUserId(), user.getEmail());
 
         // 리프레시 토큰을 디비에 저장
         RefreshToken refreshTokenEntity = new RefreshToken();
@@ -86,7 +80,7 @@ public class LoginController {
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.REFRESH_TOKEN_EXPIRE_COUNT/1000));
+//        refreshTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.REFRESH_TOKEN_EXPIRE_COUNT/1000));
 
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);

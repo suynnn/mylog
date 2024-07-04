@@ -40,24 +40,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String token = getToken(request); // accessToken 얻어냄
+        String token = getToken(request, "accessToken"); // accessToken 얻어냄
 
         if(StringUtils.hasText(token)){
             try{
                 getAuthentication(token);
             }catch (ExpiredJwtException e){
 
-                String accessToken = "fail";
+                String accessToken = reissueToken.reissueAccessToken(response, getToken(request, "refreshToken"));
 
-                Cookie[] cookies = request.getCookies();
-                for (Cookie cookie : cookies) {
-                    if ("refreshToken".equals(cookie.getName())) {
-                        String refreshToken = cookie.getValue();
-                        accessToken = reissueToken.reissueAccessToken(response, refreshToken);
-                    }
-                }
-
-                if ("fail".equals(accessToken)) {
+                if (!StringUtils.hasText(accessToken)) {
                     request.setAttribute("exception", JwtExceptionCode.EXPIRED_TOKEN.getCode());
                     log.error("Expired Token : {}",token,e);
 
@@ -71,6 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 } else {
                     getAuthentication(accessToken);
                 }
+
             }catch (UnsupportedJwtException e){
                 request.setAttribute("exception", JwtExceptionCode.UNSUPPORTED_TOKEN.getCode());
                 log.error("Unsupported Token: {}", token, e);
@@ -91,7 +84,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String getToken(HttpServletRequest request) {
+    private String getToken(HttpServletRequest request, String token) {
 
         String authorization = request.getHeader("Authorization");
         if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer ")) {
@@ -101,7 +94,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("accessToken".equals(cookie.getName())) {
+                if (token.equals(cookie.getName())) {
                     return cookie.getValue();
                 }
             }
