@@ -1,0 +1,52 @@
+body {
+    background-color: #fff;
+    color: #000;
+}
+.form-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.form-label {
+    color: #000;
+    font-weight: bold;
+}
+.form-control {
+    background-color: #fff;
+    border: 1px solid #000;
+    color: #000;
+}
+.form-control:focus {
+    background-color: #fff;
+    border-color: #000;
+    color: #000;
+}
+.btn-primary {
+    background-color: #000;
+    color: #fff;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: #444;
+}
+.form-error {
+    color: #ff6b6b;
+}
+.additional-info {
+    color: #5e5e5e; /* 진녹색 */
+    text-align: right;
+    margin-top: 40px;
+}
+.additional-info a {
+    color: #5e5e5e; /* 진녹색 */
+    text-decoration: none;
+}
+.additional-info a:hover {
+    text-decoration: underline;
+}
+.login-btn {
+    margin-top: 20px;
+}
