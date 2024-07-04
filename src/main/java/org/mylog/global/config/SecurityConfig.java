@@ -31,13 +31,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityLoginFilterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(request -> request
-                .requestMatchers("/", "/users/register", "/login", "/refreshToken", "/login-form").permitAll()
+                .requestMatchers("/", "/users/register", "/login", "/logout", "/refreshToken", "/login-form").permitAll()
                 .anyRequest()
                 .authenticated())
 
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenizer, reissueToken), UsernamePasswordAuthenticationFilter.class)
 
             .formLogin(formLogin -> formLogin.disable())
+            .logout(logout -> logout.disable())
             .csrf(csrf -> csrf.disable())
             .httpBasic(httpBasic -> httpBasic.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))

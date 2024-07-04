@@ -27,15 +27,15 @@ public class ReissueTokenImpl implements ReissueToken {
 
         if (!verifyRefreshToken(refreshToken) || jwtTokenizer.isRefreshTokenExpired(refreshToken)) {
 
-            Cookie cookie = new Cookie("refreshToken", "");
-            cookie.setMaxAge(0);
-            cookie.setPath("/");
+            Cookie refreshCookie = new Cookie("refreshToken", "");
+            refreshCookie.setMaxAge(0);
+            refreshCookie.setPath("/");
 
             Cookie accessCookie = new Cookie("accessToken", "");
-            cookie.setMaxAge(0);
-            cookie.setPath("/");
+            accessCookie.setMaxAge(0);
+            accessCookie.setPath("/");
 
-            response.addCookie(cookie);
+            response.addCookie(refreshCookie);
             response.addCookie(accessCookie);
 
             if (refreshTokenService.findRefreshToken(refreshToken).isPresent()) {

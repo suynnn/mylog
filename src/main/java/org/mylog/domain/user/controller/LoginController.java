@@ -1,6 +1,7 @@
 package org.mylog.domain.user.controller;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -80,11 +81,38 @@ public class LoginController {
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setPath("/");
-//        refreshTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.REFRESH_TOKEN_EXPIRE_COUNT/1000));
 
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response) {
+
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if ("refreshToken".equals(cookie.getName())) {
+                if (refreshTokenService.findRefreshToken(cookie.getValue()).isPresent()) {
+                    refreshTokenService.deleteRefreshToken(cookie.getValue());
+                }
+
+            }
+        }
+        Cookie accessTokenCookie = new Cookie("accessToken", "");
+        accessTokenCookie.setMaxAge(0);
+        accessTokenCookie.setPath("/");
+
+        Cookie refreshTokenCookie = new Cookie("refreshToken", "");
+        refreshTokenCookie.setMaxAge(0);
+        refreshTokenCookie.setPath("/");
+
+        response.addCookie(accessTokenCookie);
+        response.addCookie(refreshTokenCookie);
+
+        return "redirect:/";
+
     }
 }
