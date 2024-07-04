@@ -12,7 +12,6 @@ import org.mylog.global.jwt.service.ReissueToken;
 import org.mylog.global.jwt.util.JwtTokenizer;
 import org.springframework.stereotype.Component;
 
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -39,12 +38,16 @@ public class ReissueTokenImpl implements ReissueToken {
             response.addCookie(cookie);
             response.addCookie(accessCookie);
 
+            if (refreshTokenService.findRefreshToken(refreshToken).isPresent()) {
+                refreshTokenService.deleteRefreshToken(refreshToken);
+            }
+
             return "";
         }
 
         Claims claims = jwtTokenizer.parseRefreshToken(refreshToken);
 
-        User user = userRepository.findById(claims.get("userId", Long.class)).orElseThrow(null);
+        User user = userRepository.findById(claims.get("userId", Long.class)).orElse(null);
 
         String accessToken = jwtTokenizer.createAccessToken(
                 user.getUserId(),
