@@ -35,7 +35,7 @@ public class Post {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false, name = "created_at")
+    @Column(nullable = false, name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
