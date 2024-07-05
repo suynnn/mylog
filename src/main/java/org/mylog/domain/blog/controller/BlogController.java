@@ -1,14 +1,16 @@
 package org.mylog.domain.blog.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mylog.domain.blog.domain.Blog;
+import org.mylog.domain.blog.dto.BlogInfoDto;
 import org.mylog.domain.blog.dto.BlogMakeDto;
 import org.mylog.domain.blog.service.BlogService;
-import org.mylog.domain.user.dto.LoginUserContext;
-import org.mylog.global.etc.ConstValues;
+import org.mylog.domain.user.domain.User;
+import org.mylog.domain.user.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,17 +23,14 @@ import org.springframework.web.bind.annotation.*;
 public class BlogController {
 
     private final BlogService blogService;
+    private final UserService userService;
+
+    @Value("${upload.path}")
+    private String uploadPath;
 
     @GetMapping("/register")
     public String registerBlogForm(Model model,
                                    HttpServletRequest request) {
-//        LoginUserContext userContext = getLoginUserContext(request);
-//
-//        if (userContext == null) return "redirect:/";
-//
-//        if (userContext.getBlog() != null) {
-//            return "redirect:/";
-//        }
 
         model.addAttribute("blogMakeDto", new BlogMakeDto());
 
@@ -42,39 +41,46 @@ public class BlogController {
     public String registerBlog(@Valid @ModelAttribute("blogMakeDto") BlogMakeDto blogMakeDto,
                                BindingResult bindingResult,
                                HttpServletRequest request) {
+
         if (bindingResult.hasErrors()) {
             return "blog/blog-register-form";
         }
 
-        LoginUserContext userContext = getLoginUserContext(request);
+        log.info("blogMakeDto : {}", blogMakeDto);
 
-        if (userContext == null) return "redirect:/";
-
-        blogMakeDto.setUserId(userContext.getUserId());
         blogService.makeBlog(blogMakeDto);
 
-        return "redirect:/blogs/@" + userContext.getId();
+        return "redirect:/blogs/@" + blogMakeDto.getUsername();
     }
 
     @GetMapping("/@{id}")
-    public String showBlog(@PathVariable("id") String id,
-                           HttpServletRequest request) {
-        LoginUserContext userContext = getLoginUserContext(request);
+    public String showBlog(@PathVariable("id") String username,
+                           Model model) {
 
-        if (userContext == null) return "redirect:/";
+        User user = userService.findUserByUsername(username);
 
-        return "blog/my-blog";
-    }
-
-    private LoginUserContext getLoginUserContext(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-
-        if (session == null) {
-            return null;
+        if (user.getBlog() == null) {
+            return "redirect:/blogs/register";
         }
 
-        LoginUserContext loginUser = (LoginUserContext) session.getAttribute(ConstValues.SESSION_LOGIN_USER);
+        Blog blog = blogService.getBlogFindById(user.getBlog().getBlogId()).orElseThrow();
 
-        return loginUser;
+        BlogInfoDto blogInfoDto = BlogInfoDto.builder()
+                .blogId(blog.getBlogId())
+                .title(blog.getTitle())
+                .intro(blog.getIntro())
+                .profileImg(uploadPath+blog.getProfileImg())
+                .email(blog.getEmail())
+                .github(blog.getGithub())
+                .isDeleted(blog.getIsDeleted())
+                .seriesList(blog.getSeriesList())
+                .userId(blog.getUser().getUserId())
+                .username(blog.getUser().getId())
+                .nickname(blog.getUser().getNickname())
+                .build();
+
+        model.addAttribute("blogInfoDto", blogInfoDto);
+
+        return "blog/my-blog";
     }
 }

@@ -14,5 +14,5 @@ public class BlogMakeDto {
     private MultipartFile profileImg;
     private String email;
     private String github;
-    private Long userId;
+    private String username;
 }

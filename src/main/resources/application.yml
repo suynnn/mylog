@@ -3,11 +3,15 @@ spring:
     name: mylog
   profiles:
     active: dev
+  servlet:
+    multipart:
+      maxFileSize: 4MB # 파일 하나의 최대 크기
+      maxRequestSize: 10MB  # 한 번에 최대 업로드 가능 용량
 
 server:
   servlet:
     session:
       tracking-modes: cookie
 
-file:
-  dir: /Users/suyeon/Documents/공부/TECHIT/프로젝트 과제/0618 블로그 만들기/files/
+upload:
+  path: /upload/

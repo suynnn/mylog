@@ -1,0 +1,85 @@
+body {
+    padding-top: 56px; /* Height of the navbar */
+    background-color: #ffffff; /* White background */
+    color: #000000; /* Black text */
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+}
+
+.profile-image {
+    flex: 0 0 200px; /* Fixed width for the profile image */
+    height: 200px;
+    margin-right: 20px;
+}
+
+.profile-info {
+    flex: 1; /* Take remaining space */
+}
+
+.profile-info h2 {
+    font-size: 1.7rem;
+    margin-bottom: 10px;
+}
+
+.profile-info .text-muted {
+    color: #6c757d;
+}
+
+.follow-section {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.follow-section a {
+    color: #000000; /* Black text for links */
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+.follow-section button {
+    background-color: #000000; /* Black button background */
+    color: #ffffff; /* White button text */
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.nav-tabs {
+    background-color: #ffffff; /* White background for tabs */
+    border-bottom: none; /* Remove border bottom */
+    margin-top: 20px;
+}
+
+.nav-tabs .nav-item .nav-link {
+    color: #000000; /* Black tab link text */
+    border: none;
+    border-bottom: 2px solid transparent; /* Transparent bottom border */
+    border-radius: 0; /* No border-radius */
+    background-color: transparent; /* Transparent background */
+    font-size: 20px;
+}
+
+.nav-tabs .nav-item .nav-link.active {
+    border-color: #000000; /* Black bottom border for active tab */
+}
+
+.tab-content {
+    margin-top: 20px;
+}
+
+.tab-pane {
+    padding: 20px 0;
+}
+
+.btn-section {
+    margin-top: 20px;
+    margin-right: 40px;
+}
+
+.main-style {
+    margin-top: 100px;
+}

@@ -9,6 +9,8 @@ import org.mylog.global.file.FileStore;
 import org.mylog.domain.user.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class BlogServiceImpl implements BlogService {
@@ -35,9 +37,14 @@ public class BlogServiceImpl implements BlogService {
                 .email(dto.getEmail())
                 .github(dto.getGithub())
                 .isDeleted(false)
-                .user(userService.findUserByUserId(dto.getUserId()))
+                .user(userService.findUserByUsername(dto.getUsername()))
                 .build();
 
         return blogRepository.save(blog).getBlogId();
+    }
+
+    @Override
+    public Optional<Blog> getBlogFindById(Long id) {
+        return blogRepository.findById(id);
     }
 }
