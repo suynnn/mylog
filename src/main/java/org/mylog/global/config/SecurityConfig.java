@@ -1,7 +1,6 @@
 package org.mylog.global.config;
 
 import lombok.RequiredArgsConstructor;
-import org.mylog.global.jwt.exception.CustomAuthenticationEntryPoint;
 import org.mylog.global.jwt.filter.JwtAuthenticationFilter;
 import org.mylog.global.jwt.service.ReissueToken;
 import org.mylog.global.jwt.util.JwtTokenizer;
@@ -26,7 +25,6 @@ public class SecurityConfig {
 
     private final JwtTokenizer jwtTokenizer;
     private final ReissueToken reissueToken;
-    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityLoginFilterChain(HttpSecurity http) throws Exception{
@@ -43,10 +41,7 @@ public class SecurityConfig {
             .logout(logout -> logout.disable())
             .csrf(csrf -> csrf.disable())
             .httpBasic(httpBasic -> httpBasic.disable())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
-            .exceptionHandling(exception -> exception
-                    .authenticationEntryPoint(customAuthenticationEntryPoint));
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         return http.build();
     }

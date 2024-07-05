@@ -2,8 +2,6 @@ package org.mylog.global.jwt.filter;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -11,12 +9,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mylog.global.jwt.exception.JwtExceptionCode;
 import org.mylog.global.jwt.service.ReissueToken;
 import org.mylog.global.jwt.token.JwtAuthenticationToken;
 import org.mylog.global.jwt.util.JwtTokenizer;
 import org.mylog.global.security.CustomUserDetails;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,42 +39,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = getToken(request, "accessToken"); // accessToken 얻어냄
 
         if(StringUtils.hasText(token)){
+
             try{
                 getAuthentication(token);
+
             }catch (ExpiredJwtException e){
 
                 String accessToken = reissueToken.reissueAccessToken(response, getToken(request, "refreshToken"));
 
                 if (!StringUtils.hasText(accessToken)) {
-                    request.setAttribute("exception", JwtExceptionCode.EXPIRED_TOKEN.getCode());
-                    log.error("Expired Token : {}",token,e);
-
                     Cookie accessCookie = new Cookie("accessToken", "");
                     accessCookie.setMaxAge(0);
                     accessCookie.setPath("/");
+
                     response.addCookie(accessCookie);
 
-//                throw new BadCredentialsException("Expired token exception", e);
-                    log.error(e.getMessage());
                 } else {
                     getAuthentication(accessToken);
                 }
 
-            }catch (UnsupportedJwtException e){
-                request.setAttribute("exception", JwtExceptionCode.UNSUPPORTED_TOKEN.getCode());
-                log.error("Unsupported Token: {}", token, e);
-                throw new BadCredentialsException("Unsupported token exception", e);
-            } catch (MalformedJwtException e) {
-                request.setAttribute("exception", JwtExceptionCode.INVALID_TOKEN.getCode());
-                log.error("Invalid Token: {}", token, e);
-                throw new BadCredentialsException("Invalid token exception", e);
-            } catch (IllegalArgumentException e) {
-                request.setAttribute("exception", JwtExceptionCode.NOT_FOUND_TOKEN.getCode());
-                log.error("Token not found: {}", token, e);
-                throw new BadCredentialsException("Token not found exception", e);
-            } catch (Exception e) {
-                log.error("JWT Filter - Internal Error: {}", token, e);
-                throw new BadCredentialsException("JWT filter internal exception", e);
             }
         }
         filterChain.doFilter(request, response);
