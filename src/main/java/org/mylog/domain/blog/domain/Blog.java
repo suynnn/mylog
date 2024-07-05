@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.mylog.domain.post.domain.Post;
 import org.mylog.domain.series.domain.Series;
 import org.mylog.domain.user.domain.User;
 
@@ -44,5 +45,9 @@ public class Blog {
     private User user;
 
     @OneToMany(mappedBy = "blog")
+    private List<Post> postList;
+
+    @OneToMany(mappedBy = "blog")
     private List<Series> seriesList;
+
 }

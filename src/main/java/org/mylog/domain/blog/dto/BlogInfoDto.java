@@ -1,6 +1,7 @@
 package org.mylog.domain.blog.dto;
 
 import lombok.*;
+import org.mylog.domain.post.domain.Post;
 import org.mylog.domain.series.domain.Series;
 import org.mylog.domain.user.domain.User;
 
@@ -19,6 +20,7 @@ public class BlogInfoDto {
     private String email;
     private String github;
     private Boolean isDeleted;
+    private List<Post> postList;
     private List<Series> seriesList;
 
     private Long userId;
