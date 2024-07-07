@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SeriesService {
-    List<Series> findAllByBlogId(Long blogId);
+    List<Series> findAllByBlogId(Long id);
 
     Series registerSeries(SeriesRegisterDto seriesRegisterDto);
 }

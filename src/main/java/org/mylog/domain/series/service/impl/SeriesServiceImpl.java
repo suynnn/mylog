@@ -10,7 +10,6 @@ import org.mylog.domain.series.service.SeriesService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,8 +18,8 @@ public class SeriesServiceImpl implements SeriesService {
     private final BlogService blogService;
 
     @Override
-    public List<Series> findAllByBlogId(Long blogId) {
-        return seriesRepository.findAllByBlogId(blogId);
+    public List<Series> findAllByBlogId(Long id) {
+        return seriesRepository.findByBlogId(id);
     }
 
     @Override

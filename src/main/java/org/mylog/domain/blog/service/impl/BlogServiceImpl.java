@@ -40,7 +40,7 @@ public class BlogServiceImpl implements BlogService {
                 .user(userService.findUserByUsername(dto.getUsername()))
                 .build();
 
-        return blogRepository.save(blog).getBlogId();
+        return blogRepository.save(blog).getId();
     }
 
     @Override

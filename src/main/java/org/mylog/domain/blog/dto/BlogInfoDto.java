@@ -3,7 +3,6 @@ package org.mylog.domain.blog.dto;
 import lombok.*;
 import org.mylog.domain.post.domain.Post;
 import org.mylog.domain.series.domain.Series;
-import org.mylog.domain.user.domain.User;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BlogInfoDto {
-    private Long blogId;
+    private Long id;
     private String title;
     private String intro;
     private String profileImg;

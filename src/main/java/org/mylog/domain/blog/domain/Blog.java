@@ -21,7 +21,7 @@ public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "blog_id")
-    private Long blogId;
+    private Long id;
 
     @Column(nullable = false, length = 100)
     private String title;
