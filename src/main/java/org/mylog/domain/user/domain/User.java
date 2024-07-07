@@ -46,7 +46,7 @@ public class User {
     @Column(nullable = false, name = "is_withdrawal")
     private Boolean isWithdrawal;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     private Blog blog;
 
     @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -58,6 +58,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Like> likes = new HashSet<>();
 
+    @Setter
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserRole> userRoles = new ArrayList<>();
 }

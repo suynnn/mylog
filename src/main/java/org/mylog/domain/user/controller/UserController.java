@@ -61,7 +61,6 @@ public class UserController {
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
 
-
         return "redirect:/blogs/register";
     }
 }
