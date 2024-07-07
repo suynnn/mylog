@@ -29,7 +29,7 @@
                             <button class="btn btn-dark" th:onclick="|location.href='@{/login-form}'|">로그인</button>
                         </div>
                         <div sec:authorize="isAuthenticated()" class="button-icon-container">
-                            <button class="btn btn-outline-dark" th:onclick="|location.href='@{/}'|">새 글 작성</button>
+                            <button class="btn btn-outline-dark" th:onclick="|location.href='@{/posts/publish}'|">새 글 작성</button>
                             <div class="dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="userMenu1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person"></i>
@@ -85,7 +85,7 @@
                             <button class="btn btn-dark" th:onclick="|location.href='@{/login-form}'|">로그인</button>
                         </div>
                         <div sec:authorize="isAuthenticated()" class="button-icon-container">
-                            <button class="btn btn-outline-dark" th:onclick="|location.href='@{/}'|">새 글 작성</button>
+                            <button class="btn btn-outline-dark" th:onclick="|location.href='@{/posts/publish}'|">새 글 작성</button>
                             <div class="dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="userMenu2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person"></i>
