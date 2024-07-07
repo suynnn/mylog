@@ -19,12 +19,12 @@ public class SeriesServiceImpl implements SeriesService {
     private final BlogService blogService;
 
     @Override
-    public List<Optional<Series>> findAllByBlogId(Long blogId) {
+    public Optional<List<Series>> findAllByBlogId(Long blogId) {
         return seriesRepository.findAllByBlogId(blogId);
     }
 
     @Override
-    public Long registerSeries(SeriesRegisterDto seriesRegisterDto) {
+    public Series registerSeries(SeriesRegisterDto seriesRegisterDto) {
         Blog blog = blogService.getBlogFindById(seriesRegisterDto.getBlogId()).orElseThrow();
 
         Series series = Series.builder()
@@ -32,6 +32,6 @@ public class SeriesServiceImpl implements SeriesService {
                 .blog(blog)
                 .build();
 
-        return seriesRepository.save(series).getSeriesId();
+        return seriesRepository.save(series);
     }
 }

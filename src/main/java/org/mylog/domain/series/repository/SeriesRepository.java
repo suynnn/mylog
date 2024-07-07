@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface SeriesRepository extends JpaRepository<Series, Long> {
-    List<Optional<Series>> findAllByBlogId(Long blogId);
+    Optional<List<Series>> findAllByBlogId(Long blogId);
 }
