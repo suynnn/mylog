@@ -50,7 +50,7 @@ public class ReissueTokenImpl implements ReissueToken {
         User user = userRepository.findById(claims.get("userId", Long.class)).orElse(null);
 
         String accessToken = jwtTokenizer.createAccessToken(
-                user.getUserId(),
+                user.getId(),
                 user.getEmail(),
                 user.getName(),
                 user.getUsername(),

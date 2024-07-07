@@ -35,7 +35,7 @@ class UserRepositoryTest {
 
         User user1 = userRepository.findById(1L).orElseThrow();
 
-        System.out.println(user1.getUserId());
+        System.out.println(user1.getId());
     }
 
     @Test
