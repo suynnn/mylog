@@ -55,7 +55,8 @@ public class ReissueTokenImpl implements ReissueToken {
                 user.getName(),
                 user.getUsername(),
                 user.getUserRoles()
-                        .stream().map(role -> role.getRole().getRoleEnum().name()).toList()
+                        .stream().map(role -> role.getRole().getRoleEnum().name()).toList(),
+                user.getBlog().getId()
         );
 
         Cookie accessTokenCookie = new Cookie("accessToken", accessToken);

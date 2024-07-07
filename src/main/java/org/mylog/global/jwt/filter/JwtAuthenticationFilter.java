@@ -85,12 +85,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private void getAuthentication(String token){
         Claims claims = jwtTokenizer.parseAccessToken(token);
         String email = claims.getSubject();
+
         Long userId = claims.get("userId", Long.class);
         String name = claims.get("name", String.class);
         String username = claims.get("username", String.class);
         List<GrantedAuthority> authorities = getGrantedAuthorities(claims);
+        Long blogId = claims.get("blogId", Long.class);
 
-        CustomUserDetails userDetails = new CustomUserDetails(username,"",name,authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        CustomUserDetails userDetails = new CustomUserDetails(userId, username,"",name,authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()), blogId);
 
         Authentication authentication = new JwtAuthenticationToken(authorities, userDetails, null);
         SecurityContextHolder.getContext().setAuthentication(authentication);

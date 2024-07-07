@@ -5,6 +5,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mylog.domain.blog.domain.Blog;
+import org.mylog.domain.blog.dto.BlogMakeDto;
+import org.mylog.domain.blog.service.BlogService;
 import org.mylog.domain.user.domain.User;
 import org.mylog.domain.user.dto.UserRegisterDto;
 import org.mylog.domain.user.service.LoginService;
@@ -26,7 +29,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final LoginService loginService;
+    private final BlogService blogService;
 
     @GetMapping("/register")
     public String registerUserForm(Model model) {
@@ -46,21 +49,12 @@ public class UserController {
 
         User user = userService.registerUser(userRegisterDto);
 
-        List<String> tokens = loginService.login(user);
-        String accessToken = tokens.get(0);
-        String refreshToken = tokens.get(1);
+        BlogMakeDto blogMakeDto = new BlogMakeDto();
+        blogMakeDto.setTitle(user.getNickname()+"의 블로그");
+        blogMakeDto.setUsername(user.getUsername());
 
-        Cookie accessTokenCookie = new Cookie("accessToken", accessToken);
-        accessTokenCookie.setHttpOnly(true); // 보안 (쿠키값을 자바스크립트 같은 곳에서는 접근 불가)
-        accessTokenCookie.setPath("/");
+        blogService.makeBlog(blogMakeDto);
 
-        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setPath("/");
-
-        response.addCookie(accessTokenCookie);
-        response.addCookie(refreshTokenCookie);
-
-        return "redirect:/blogs/register";
+        return "redirect:/login-form";
     }
 }

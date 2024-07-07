@@ -10,17 +10,21 @@ import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
+    private final Long userId;
     private final String username;
     private final String password;
     private final String name;
     private final List<GrantedAuthority> authorities;
+    private final Long blogId;
 
 
-    public CustomUserDetails(String username, String password, String name, List<String> roles) {
+    public CustomUserDetails(Long userId, String username, String password, String name, List<String> roles, Long blogId) {
+        this.userId = userId;
         this.username = username;
         this.password = password;
         this.name = name;
         this.authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        this.blogId = blogId;
     }
 
     @Override
@@ -36,6 +40,18 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Long getBlogId() {
+        return blogId;
     }
 
     @Override

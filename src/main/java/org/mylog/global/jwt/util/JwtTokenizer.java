@@ -34,7 +34,7 @@ public class JwtTokenizer {
 
     // ACCESS Token 생성
     public String createAccessToken(Long id, String email, String name, String username,
-                                    List<String> roles) {
+                                    List<String> roles, Long blogId) {
 
         Claims claims = Jwts.claims().setSubject(email);
 
@@ -42,6 +42,7 @@ public class JwtTokenizer {
         claims.put("username", username);
         claims.put("name", name);
         claims.put("roles", roles);
+        claims.put("blogId", blogId);
 
         return Jwts.builder()
                 .setClaims(claims)

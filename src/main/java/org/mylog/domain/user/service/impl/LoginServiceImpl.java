@@ -31,7 +31,8 @@ public class LoginServiceImpl implements LoginService {
                 user.getEmail(),
                 user.getName(),
                 user.getUsername(),
-                roles
+                roles,
+                user.getBlog().getId()
         );
 
         String refreshToken = jwtTokenizer.createRefreshToken(user.getId(), user.getEmail());
