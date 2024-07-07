@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Long registerUser(UserRegisterDto dto) {
+    public User registerUser(UserRegisterDto dto) {
         User user = User.builder()
                 .id(dto.getId())
                 .password(passwordEncoder.encode(dto.getPassword()))
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
                 .isWithdrawal(false)
                 .build();
 
-        Long id = userRepository.save(user).getUserId();
+        User savedUser = userRepository.save(user);
 
         Role role = roleService.findRoleById(2L);
 
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
         userRoleService.registerUserRole(userRole);
 
-        return id;
+        return savedUser;
 
     }
 

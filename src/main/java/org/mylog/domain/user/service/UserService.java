@@ -5,7 +5,7 @@ import org.mylog.domain.user.dto.UserRegisterDto;
 
 public interface UserService {
 
-    Long registerUser(UserRegisterDto dto);
+    User registerUser(UserRegisterDto dto);
 
     User findUserByUserId(Long id);
 
