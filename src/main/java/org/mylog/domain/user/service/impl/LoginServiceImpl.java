@@ -2,14 +2,11 @@ package org.mylog.domain.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mylog.domain.user.dto.UserLoginResponseDto;
-import org.mylog.domain.user.repository.UserRepository;
 import org.mylog.domain.user.service.LoginService;
 import org.mylog.domain.user.domain.User;
 import org.mylog.global.jwt.domain.RefreshToken;
 import org.mylog.global.jwt.service.RefreshTokenService;
 import org.mylog.global.jwt.util.JwtTokenizer;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,7 +30,7 @@ public class LoginServiceImpl implements LoginService {
                 user.getUserId(),
                 user.getEmail(),
                 user.getName(),
-                user.getId(),
+                user.getUsername(),
                 roles
         );
 

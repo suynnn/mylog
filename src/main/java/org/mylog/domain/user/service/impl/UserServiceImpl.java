@@ -1,6 +1,7 @@
 package org.mylog.domain.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.mylog.domain.user.domain.Role;
 import org.mylog.domain.user.domain.UserRole;
 import org.mylog.domain.user.dto.UserRegisterDto;
@@ -11,11 +12,14 @@ import org.mylog.domain.user.service.UserService;
 import org.mylog.domain.user.domain.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -30,7 +34,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registerUser(UserRegisterDto dto) {
         User user = User.builder()
-                .id(dto.getId())
+                .username(dto.getUsername())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
                 .email(dto.getEmail())
@@ -41,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
         User savedUser = userRepository.save(user);
 
-        Role role = roleService.findRoleById(2L);
+        Role role = roleService.findRoleById(1L);
 
         UserRole userRole = UserRole.builder()
                         .user(user)
@@ -56,14 +60,16 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User findUserByUserId(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User findUserByUsername(String username) {
 
-        return userRepository.findById(username).orElse(null);
+        return userRepository.findByUsername(username).orElse(null);
     }
 }

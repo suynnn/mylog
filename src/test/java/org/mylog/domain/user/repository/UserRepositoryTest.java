@@ -1,13 +1,14 @@
-package org.mylog.repository;
+package org.mylog.domain.user.repository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mylog.domain.user.domain.User;
-import org.mylog.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class UserRepositoryTest {
@@ -30,16 +31,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void saveUser() {
-        userRepository.save(user);
-
-        User user1 = userRepository.findById(1L).orElseThrow();
-
-        System.out.println(user1.getUserId());
-    }
-
-    @Test
-    void findById() {
+    void findByUsername() {
         userRepository.save(user);
 
         User user1 = userRepository.findByUsername("user1").orElseThrow();
@@ -47,5 +39,4 @@ class UserRepositoryTest {
         System.out.println(user1.getEmail());
 
     }
-
 }

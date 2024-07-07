@@ -53,7 +53,7 @@ public class ReissueTokenImpl implements ReissueToken {
                 user.getUserId(),
                 user.getEmail(),
                 user.getName(),
-                user.getId(),
+                user.getUsername(),
                 user.getUserRoles()
                         .stream().map(role -> role.getRole().getRoleEnum().name()).toList()
         );

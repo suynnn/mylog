@@ -10,7 +10,7 @@ public class UserRegisterDto {
 
     @NotBlank(message = "id는 공백을 허용하지 않습니다.")
     @Size(min= 4, max = 30, message = "id는 4~30자 까지만 허용합니다.")
-    private String id;
+    private String username;
 
     @NotBlank(message = "password는 공백을 허용하지 않습니다.")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=!]).*$",

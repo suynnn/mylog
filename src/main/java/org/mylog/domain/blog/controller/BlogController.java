@@ -53,8 +53,8 @@ public class BlogController {
         return "redirect:/blogs/@" + blogMakeDto.getUsername();
     }
 
-    @GetMapping("/@{id}")
-    public String showBlog(@PathVariable("id") String username,
+    @GetMapping("/@{username}")
+    public String showBlog(@PathVariable("username") String username,
                            Model model) {
 
         User user = userService.findUserByUsername(username);
@@ -76,7 +76,7 @@ public class BlogController {
                 .postList(blog.getPostList())
                 .seriesList(blog.getSeriesList())
                 .userId(blog.getUser().getUserId())
-                .username(blog.getUser().getId())
+                .username(blog.getUser().getUsername())
                 .nickname(blog.getUser().getNickname())
                 .build();
 
