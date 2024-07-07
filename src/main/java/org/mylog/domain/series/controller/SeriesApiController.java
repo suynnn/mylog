@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,6 +31,22 @@ public class SeriesApiController {
         message.setResponseStatus(ResponseStatus.OK);
         message.setMessage("성공 코드");
         message.setData(series);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/{blogId}/all")
+    public ResponseEntity<Message> findAllSeries(@PathVariable("blogId") Long blogId) {
+
+        List<Series> seriesList = seriesService.findAllByBlogId(blogId);
+        Message message = new Message();
+
+        message.setResponseStatus(ResponseStatus.OK);
+        message.setMessage("성공 코드");
+        message.setData(seriesList);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
