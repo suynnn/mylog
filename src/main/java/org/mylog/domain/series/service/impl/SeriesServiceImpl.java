@@ -19,7 +19,7 @@ public class SeriesServiceImpl implements SeriesService {
     private final BlogService blogService;
 
     @Override
-    public Optional<List<Series>> findAllByBlogId(Long blogId) {
+    public List<Series> findAllByBlogId(Long blogId) {
         return seriesRepository.findAllByBlogId(blogId);
     }
 
