@@ -63,7 +63,7 @@ public class BlogController {
             return "redirect:/blogs/register";
         }
 
-        Blog blog = blogService.getBlogFindById(user.getBlog().getId()).orElseThrow();
+        Blog blog = user.getBlog();
 
         BlogInfoDto blogInfoDto = BlogInfoDto.builder()
                 .id(blog.getId())

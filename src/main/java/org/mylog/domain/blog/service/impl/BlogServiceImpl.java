@@ -24,7 +24,7 @@ public class BlogServiceImpl implements BlogService {
 
         String profileImg;
 
-        if (dto.getProfileImg().isEmpty()) {
+        if (dto.getProfileImg() == null) {
             profileImg = "basic-profile.png";
         } else {
             profileImg = fileStore.storeFile(dto.getProfileImg()).getStoreFileName();
