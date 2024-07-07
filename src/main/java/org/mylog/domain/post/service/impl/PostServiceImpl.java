@@ -5,6 +5,7 @@ import org.mylog.domain.post.domain.Post;
 import org.mylog.domain.post.dto.PostPublishDto;
 import org.mylog.domain.post.repository.PostRepository;
 import org.mylog.domain.post.service.PostService;
+import org.mylog.domain.series.service.SeriesService;
 import org.mylog.domain.user.domain.User;
 import org.mylog.domain.user.service.UserService;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,11 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final UserService userService;
+    private final SeriesService seriesService;
 
     @Override
     public Long publishPost(PostPublishDto postPublishDto) {
-        User user = userService.findUserByUsername(postPublishDto.getUsername());
+        User user = userService.findUserByUserId(postPublishDto.getUserId());
 
         Post post = Post.builder()
                 .title(postPublishDto.getTitle())

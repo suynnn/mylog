@@ -16,7 +16,7 @@ public class PostPublishDto {
     private Boolean isTemp;
     private Boolean isPrivate;
     private String thumbnailUrl;
-    private String username;
+    private Long userId;
     private List<String> series;
     private List<MultipartFile> images;
     private List<String> tags;

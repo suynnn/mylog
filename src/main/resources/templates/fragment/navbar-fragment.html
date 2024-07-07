@@ -31,10 +31,10 @@
                         <div sec:authorize="isAuthenticated()" class="button-icon-container">
                             <button class="btn btn-outline-dark" th:onclick="|location.href='@{/}'|">새 글 작성</button>
                             <div class="dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="userMenu1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person"></i>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu1">
                                     <li><a class="dropdown-item" th:href="@{'/blogs/@' + ${#authentication.getName()}}">내 블로그</a></li>
                                     <li><a class="dropdown-item" href="#">임시 글</a></li>
                                     <li><a class="dropdown-item" href="#">읽기 목록</a></li>
@@ -87,10 +87,10 @@
                         <div sec:authorize="isAuthenticated()" class="button-icon-container">
                             <button class="btn btn-outline-dark" th:onclick="|location.href='@{/}'|">새 글 작성</button>
                             <div class="dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="userMenu2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person"></i>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu2">
                                     <li><a class="dropdown-item" th:href="@{'/blogs/@' + ${#authentication.getName()}}">내 블로그</a></li>
                                     <li><a class="dropdown-item" href="#">임시 글</a></li>
                                     <li><a class="dropdown-item" href="#">읽기 목록</a></li>
