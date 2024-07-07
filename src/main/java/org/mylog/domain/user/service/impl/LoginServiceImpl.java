@@ -27,19 +27,19 @@ public class LoginServiceImpl implements LoginService {
                 .stream().map(role -> role.getRole().getRoleEnum().name()).toList();
 
         String accessToken = jwtTokenizer.createAccessToken(
-                user.getUserId(),
+                user.getId(),
                 user.getEmail(),
                 user.getName(),
                 user.getUsername(),
                 roles
         );
 
-        String refreshToken = jwtTokenizer.createRefreshToken(user.getUserId(), user.getEmail());
+        String refreshToken = jwtTokenizer.createRefreshToken(user.getId(), user.getEmail());
 
         // 리프레시 토큰을 디비에 저장
         RefreshToken refreshTokenEntity = new RefreshToken();
         refreshTokenEntity.setValue(refreshToken);
-        refreshTokenEntity.setUserId(user.getUserId());
+        refreshTokenEntity.setUserId(user.getId());
 
         refreshTokenService.addRefreshToken(refreshTokenEntity);
 

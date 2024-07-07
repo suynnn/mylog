@@ -21,7 +21,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
-    private Long commentId;
+    private Long id;
 
     @Column(nullable = false)
     private String content;

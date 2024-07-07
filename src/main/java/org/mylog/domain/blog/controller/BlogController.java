@@ -75,7 +75,7 @@ public class BlogController {
                 .isDeleted(blog.getIsDeleted())
                 .postList(blog.getPostList())
                 .seriesList(blog.getSeriesList())
-                .userId(blog.getUser().getUserId())
+                .userId(blog.getUser().getId())
                 .username(blog.getUser().getUsername())
                 .nickname(blog.getUser().getNickname())
                 .build();
