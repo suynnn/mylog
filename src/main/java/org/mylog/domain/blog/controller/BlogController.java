@@ -73,6 +73,7 @@ public class BlogController {
                 .email(blog.getEmail())
                 .github(blog.getGithub())
                 .isDeleted(blog.getIsDeleted())
+                .postList(blog.getPostList())
                 .seriesList(blog.getSeriesList())
                 .userId(blog.getUser().getUserId())
                 .username(blog.getUser().getId())
