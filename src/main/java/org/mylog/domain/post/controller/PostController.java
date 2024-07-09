@@ -39,9 +39,9 @@ public class PostController {
     public String publishPost(@Valid @ModelAttribute("postPublishDto") PostPublishDto postPublishDto,
                               BindingResult bindingResult) {
 
-//        if (bindingResult.hasErrors()) {
-//            return "post/post-publish-form";
-//        }
+        if (bindingResult.hasErrors()) {
+            return "post/post-publish-form";
+        }
 
         log.info("postPublishDto {}", postPublishDto);
 
