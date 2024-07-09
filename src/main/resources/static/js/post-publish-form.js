@@ -156,7 +156,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         const seriesRadio = document.createElement('input');
                         seriesRadio.type = 'radio';
                         seriesRadio.name = 'series';
-                        seriesRadio.value = series.name;
+                        seriesRadio.value = series.id; // 시리즈 ID를 값으로 설정
+                        seriesRadio.dataset.name = series.name; // 시리즈 이름을 데이터 속성으로 설정
 
                         listItem.appendChild(seriesRadio);
                         listItem.appendChild(document.createTextNode(series.name));
@@ -230,7 +231,11 @@ document.addEventListener('DOMContentLoaded', function () {
     selectSeriesBtn.addEventListener('click', function () {
         const selectedSeries = document.querySelector('input[name="series"]:checked');
         if (selectedSeries) {
-            seriesInput.value = selectedSeries.value;
+            const seriesName = selectedSeries.dataset.name; // 시리즈 이름 가져오기
+            const seriesId = selectedSeries.value; // 시리즈 ID 가져오기
+
+            seriesInput.value = seriesName;
+            document.getElementById('seriesId').value = seriesId; // hidden input에 시리즈 ID 설정
             seriesArea.classList.add('d-none');
         }
     });

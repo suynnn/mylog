@@ -18,7 +18,7 @@ public class PostPublishDto {
     private MultipartFile thumbnail;
     private Long userId;
     private Long blogId;
-    private String series;
+    private Long seriesId;
     private List<MultipartFile> images;
     private List<String> tags;
 }
