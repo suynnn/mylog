@@ -61,6 +61,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('publishBtn').addEventListener('click', function () {
         document.getElementById('isTemp').value = false;
+
+        // 컨텐츠 내용 미리보기 설정
+        const content = document.getElementById('content').value;
+        document.getElementById('contentPreview').value = content.substring(0, 150);
     });
 
     // 실시간 미리보기 기능 추가
@@ -138,27 +142,34 @@ document.addEventListener('DOMContentLoaded', function () {
     seriesRegisterBtn.addEventListener('click', function () {
         const blogId = document.querySelector('[name="blogId"]').value;
 
-        // Fetch series data from server
         fetch(`http://localhost:8080/series/${blogId}/all`)
             .then(response => response.json())
-            .then(data => {
-                seriesList.innerHTML = ''; // Clear any existing list items
+            .then(response => {
+                const data = response.data; // Message 객체에서 data 부분만 추출합니다.
+                if (Array.isArray(data)) {
+                    seriesList.innerHTML = ''; // Clear any existing list items
 
-                data.forEach(series => {
-                    const listItem = document.createElement('li');
-                    listItem.className = 'list-group-item';
+                    data.forEach(series => {
+                        const listItem = document.createElement('li');
+                        listItem.className = 'list-group-item';
 
-                    const seriesRadio = document.createElement('input');
-                    seriesRadio.type = 'radio';
-                    seriesRadio.name = 'series';
-                    seriesRadio.value = series.name;
+                        const seriesRadio = document.createElement('input');
+                        seriesRadio.type = 'radio';
+                        seriesRadio.name = 'series';
+                        seriesRadio.value = series.name;
 
-                    listItem.appendChild(seriesRadio);
-                    listItem.appendChild(document.createTextNode(series.name));
-                    seriesList.appendChild(listItem);
-                });
+                        listItem.appendChild(seriesRadio);
+                        listItem.appendChild(document.createTextNode(series.name));
+                        seriesList.appendChild(listItem);
+                    });
 
-                seriesArea.classList.remove('d-none'); // Show series area
+                    seriesArea.classList.remove('d-none'); // Show series area
+                } else {
+                    console.error('Received data is not an array:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching series:', error);
             });
     });
 
@@ -181,21 +192,29 @@ document.addEventListener('DOMContentLoaded', function () {
             body: JSON.stringify({ name: newSeriesInput.value, blogId: blogId })
         })
             .then(response => response.json())
-            .then(newSeries => {
-                const newListItem = document.createElement('li');
-                newListItem.className = 'list-group-item';
+            .then(responseData => {
+                if (responseData.data) {
+                    const newSeries = responseData.data;
+                    const newListItem = document.createElement('li');
+                    newListItem.className = 'list-group-item';
 
-                const newSeriesRadio = document.createElement('input');
-                newSeriesRadio.type = 'radio';
-                newSeriesRadio.name = 'series';
-                newSeriesRadio.value = newSeries.name;
+                    const newSeriesRadio = document.createElement('input');
+                    newSeriesRadio.type = 'radio';
+                    newSeriesRadio.name = 'series';
+                    newSeriesRadio.value = newSeries.name;
 
-                newListItem.appendChild(newSeriesRadio);
-                newListItem.appendChild(document.createTextNode(newSeries.name));
-                seriesList.appendChild(newListItem);
+                    newListItem.appendChild(newSeriesRadio);
+                    newListItem.appendChild(document.createTextNode(newSeries.name));
+                    seriesList.appendChild(newListItem);
 
-                newSeriesInput.value = '';
-                newSeriesActions.classList.add('d-none');
+                    newSeriesInput.value = '';
+                    newSeriesActions.classList.add('d-none');
+                } else {
+                    console.error('Failed to add new series:', responseData.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching series:', error);
             });
     });
 
