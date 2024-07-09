@@ -18,14 +18,187 @@
 <body>
 <div th:replace="~{/fragment/navbar-fragment :: navbarFragment}"></div>
 
-<div>
-    <form method="post" th:action="@{/posts/publish}" th:object="${postPublishDto}">
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <form id="mainForm" method="post" th:action="@{/posts/publish}" th:object="${postPublishDto}" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="title" class="form-label">제목</label>
+                    <input type="text" id="title" th:field="*{title}" class="form-control" required>
+                    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="tag" class="form-label">태그</label>
+                    <input type="text" id="tag" class="form-control">
+                    <div class="tag-container" id="tag-container"></div>
+                </div>
+                <div>
+                    <textarea id="content" th:field="*{content}" class="form-control h-100" rows="15" required></textarea>
+                    <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="text-danger"></div>
+                </div>
 
-        <input type="hidden" name="userId", th:value="${#authentication.principal.getUserId()}">
-        <input type="hidden" name="blogId", th:value="${#authentication.principal.getBlogId()}">
-        <button type="submit">등록</button>
-    </form>
+                <input type="file" name="thumbnail" th:field="*{thumbnail}" id="hiddenThumbnailInput" style="display:none;">
+
+                <input type="hidden" name="userId" th:value="${#authentication.principal.getUserId()}">
+                <input type="hidden" name="blogId" th:value="${#authentication.principal.getBlogId()}">
+
+                <input type="hidden" name="isTemp" id="isTemp">
+                <input type="hidden" name="isPrivate" id="isPrivate">
+                <input type="hidden" name="tags" id="tags">
+
+                <button type="button" id="tempSaveBtn" class="btn btn-secondary mt-3">임시저장</button>
+                <button type="button" id="publishBtn" class="btn btn-dark mt-3" data-bs-toggle="modal" data-bs-target="#publishModal">출간하기</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <div class="preview-pane">
+                <div>
+                    <h2 id="preview-title"></h2>
+                </div>
+                <div>
+                    <br/><br/>
+                    <p id="preview-content"></p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Publish Modal -->
+<div class="modal fade" id="publishModal" tabindex="-1" aria-labelledby="publishModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="publishModalLabel">출간하기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>포스트 미리보기</h4>
+                        <div class="mb-3">
+                            <label for="thumbnailForm" class="form-label">썸네일 URL</label>
+                            <input type="file" id="thumbnailForm" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>공개 설정</h4>
+                        <div class="mb-3">
+                            <label for="visibility" class="form-label">공개 여부</label>
+                            <select id="visibility" class="form-select">
+                                <option value="false">공개</option>
+                                <option value="true">비공개</option>
+                            </select>
+                        </div>
+                        <h4>시리즈 설정</h4>
+                        <div class="mb-3">
+
+                        </div>
+                    </div>
+                </div>
+                <button type="button" id="modalPublishBtn" class="btn btn-dark">출간하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tagInput = document.getElementById('tag');
+        const tagContainer = document.getElementById('tag-container');
+        const tags = [];
+        let isComposing = false;
+
+        tagInput.addEventListener('compositionstart', function () {
+            isComposing = true;
+        });
+
+        tagInput.addEventListener('compositionend', function () {
+            isComposing = false;
+        });
+
+        tagInput.addEventListener('keydown', function (e) {
+            if (!isComposing && (e.key === 'Enter' || e.key === ',')) {
+                e.preventDefault();
+                const tagValue = tagInput.value.trim();
+                if (tagValue) {
+                    addTag(tagValue);
+                    tagInput.value = '';
+                }
+            }
+        });
+
+        function addTag(tag) {
+            if (tag && !tags.includes(tag)) {
+                tags.push(tag);
+                updateTagsInput();
+
+                const tagBtn = document.createElement('button');
+                tagBtn.type = 'button';
+                tagBtn.className = 'btn tag-btn btn-outline-dark position-relative me-1 mb-1';
+                tagBtn.textContent = tag;
+
+                tagBtn.addEventListener('click', function () {
+                    removeTag(tag);
+                    tagContainer.removeChild(tagBtn);
+                });
+                tagContainer.appendChild(tagBtn);
+            }
+        }
+
+        function removeTag(tag) {
+            const index = tags.indexOf(tag);
+            if (index > -1) {
+                tags.splice(index, 1);
+                updateTagsInput();
+            }
+        }
+
+        function updateTagsInput() {
+            document.getElementById('tags').value = tags.join(',');
+        }
+
+        document.getElementById('tempSaveBtn').addEventListener('click', function () {
+            document.getElementById('isTemp').value = true;
+            document.getElementById('isPrivate').value = true;
+            document.getElementById('mainForm').submit();
+        });
+
+        document.getElementById('publishBtn').addEventListener('click', function () {
+            document.getElementById('isTemp').value = false;
+        });
+
+        // 실시간 미리보기 기능 추가
+        const titleInput = document.getElementById('title');
+        const contentInput = document.getElementById('content');
+        const previewTitle = document.getElementById('preview-title');
+        const previewContent = document.getElementById('preview-content');
+
+        titleInput.addEventListener('input', function () {
+            previewTitle.textContent = titleInput.value;
+        });
+
+        contentInput.addEventListener('input', function () {
+            previewContent.textContent = contentInput.value;
+        });
+
+        // 모달창의 출간하기 버튼 클릭 시 모달 데이터 메인 폼으로 복사 후 제출
+        document.getElementById('modalPublishBtn').addEventListener('click', function () {
+            const thumbnailFileInput = document.getElementById('thumbnailForm');
+            const visibility = document.getElementById('visibility').value;
+
+            // 파일 선택 확인
+            if (thumbnailFileInput.files.length > 0) {
+                document.getElementById('hiddenThumbnailInput').files = thumbnailFileInput.files;
+            }
+
+            document.getElementById('isPrivate').value = visibility === 'true';
+
+            document.getElementById('mainForm').submit();
+        });
+    });
+
+</script>
 
 </body>
 </html>

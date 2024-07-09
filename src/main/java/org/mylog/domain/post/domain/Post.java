@@ -51,7 +51,7 @@ public class Post {
     @Column(nullable = false, name = "is_deleted")
     private Boolean isDeleted;
 
-    @Column(nullable = false, name = "thumbnail_url")
+    @Column(name = "thumbnail_url")
     private String thumbnailUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
