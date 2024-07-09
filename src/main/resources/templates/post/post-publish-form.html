@@ -74,11 +74,22 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <h4>포스트 미리보기</h4>
                         <div class="mb-3">
-                            <label for="thumbnailForm" class="form-label">썸네일 URL</label>
-                            <input type="file" id="thumbnailForm" class="form-control">
+                            <label for="thumbnailForm" class="form-label">썸네일</label>
+                            <div id="thumbnailWrapper" class="thumbnail-upload-wrapper">
+                                <button type="button" id="thumbnailUploadBtn" class="btn btn-secondary">썸네일 업로드</button>
+                                <input type="file" id="thumbnailForm" class="form-control">
+                            </div>
+                            <div class="thumbnail-actions" style="display: none;">
+                                <button type="button" id="reuploadThumbnail" class="btn btn-light btn-sm">재업로드</button>
+                                <button type="button" id="removeThumbnail" class="btn btn-light btn-sm">제거</button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contentPreview" class="form-label">포스트 내용</label>
+                            <textarea id="contentPreview" class="form-control" rows="5" readonly></textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -92,7 +103,20 @@
                         </div>
                         <h4>시리즈 설정</h4>
                         <div class="mb-3">
-
+                            <input type="text" id="seriesInput" class="form-control" readonly>
+                            <button type="button" id="seriesRegisterBtn" class="btn btn-primary mt-2">등록</button>
+                        </div>
+                        <div id="seriesArea" class="d-none">
+                            <input type="text" id="newSeriesInput" class="form-control" placeholder="새 시리즈 추가">
+                            <div id="newSeriesActions" class="mt-2 d-none">
+                                <button type="button" id="cancelNewSeriesBtn" class="btn btn-secondary">취소</button>
+                                <button type="button" id="addNewSeriesBtn" class="btn btn-primary">시리즈 추가</button>
+                            </div>
+                            <ul id="seriesList" class="list-group mt-3"></ul>
+                            <div class="mt-3">
+                                <button type="button" id="cancelSeriesBtn" class="btn btn-secondary">취소</button>
+                                <button type="button" id="selectSeriesBtn" class="btn btn-primary">선택하기</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -182,22 +206,145 @@
             previewContent.textContent = contentInput.value;
         });
 
+        // 썸네일 업로드 처리
+        const thumbnailForm = document.getElementById('thumbnailForm');
+        const thumbnailWrapper = document.getElementById('thumbnailWrapper');
+        const thumbnailActions = document.querySelector('.thumbnail-actions');
+
+        function resetThumbnailButton() {
+            thumbnailWrapper.innerHTML = `<button type="button" id="thumbnailUploadBtn" class="btn btn-secondary">썸네일 업로드</button>`;
+            thumbnailActions.style.display = 'none';
+            thumbnailForm.value = '';
+            document.getElementById('thumbnailUploadBtn').addEventListener('click', function () {
+                thumbnailForm.click();
+            });
+        }
+
+        document.getElementById('thumbnailUploadBtn').addEventListener('click', function () {
+            thumbnailForm.click();
+        });
+
+        thumbnailForm.addEventListener('change', function () {
+            if (thumbnailForm.files && thumbnailForm.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    thumbnailWrapper.innerHTML = `<img src="${e.target.result}" alt="썸네일" style="width: 100%; height: 100%; object-fit: cover;">`;
+                    thumbnailActions.style.display = 'block';
+                };
+                reader.readAsDataURL(thumbnailForm.files[0]);
+            }
+        });
+
+        document.getElementById('reuploadThumbnail').addEventListener('click', function () {
+            thumbnailForm.click();
+        });
+
+        document.getElementById('removeThumbnail').addEventListener('click', function () {
+            resetThumbnailButton();
+        });
+
         // 모달창의 출간하기 버튼 클릭 시 모달 데이터 메인 폼으로 복사 후 제출
         document.getElementById('modalPublishBtn').addEventListener('click', function () {
-            const thumbnailFileInput = document.getElementById('thumbnailForm');
             const visibility = document.getElementById('visibility').value;
-
-            // 파일 선택 확인
-            if (thumbnailFileInput.files.length > 0) {
-                document.getElementById('hiddenThumbnailInput').files = thumbnailFileInput.files;
-            }
 
             document.getElementById('isPrivate').value = visibility === 'true';
 
             document.getElementById('mainForm').submit();
         });
-    });
 
+        // 시리즈 설정 처리
+        const seriesInput = document.getElementById('seriesInput');
+        const seriesRegisterBtn = document.getElementById('seriesRegisterBtn');
+        const seriesArea = document.getElementById('seriesArea');
+        const seriesList = document.getElementById('seriesList');
+        const newSeriesInput = document.getElementById('newSeriesInput');
+        const newSeriesActions = document.getElementById('newSeriesActions');
+        const cancelNewSeriesBtn = document.getElementById('cancelNewSeriesBtn');
+        const addNewSeriesBtn = document.getElementById('addNewSeriesBtn');
+        const cancelSeriesBtn = document.getElementById('cancelSeriesBtn');
+        const selectSeriesBtn = document.getElementById('selectSeriesBtn');
+
+        seriesRegisterBtn.addEventListener('click', function () {
+            const blogId = document.querySelector('[name="blogId"]').value;
+
+            // Fetch series data from server
+            fetch(`http://localhost:8080/series/${blogId}/all`)
+                .then(response => response.json())
+                .then(data => {
+                    seriesList.innerHTML = ''; // Clear any existing list items
+
+                    data.forEach(series => {
+                        const listItem = document.createElement('li');
+                        listItem.className = 'list-group-item';
+
+                        const seriesRadio = document.createElement('input');
+                        seriesRadio.type = 'radio';
+                        seriesRadio.name = 'series';
+                        seriesRadio.value = series.name;
+
+                        listItem.appendChild(seriesRadio);
+                        listItem.appendChild(document.createTextNode(series.name));
+                        seriesList.appendChild(listItem);
+                    });
+
+                    seriesArea.classList.remove('d-none'); // Show series area
+                });
+        });
+
+        newSeriesInput.addEventListener('input', function () {
+            if (newSeriesInput.value) {
+                newSeriesActions.classList.remove('d-none');
+            } else {
+                newSeriesActions.classList.add('d-none');
+            }
+        });
+
+        addNewSeriesBtn.addEventListener('click', function () {
+            const blogId = document.querySelector('[name="blogId"]').value;
+
+            fetch(`http://localhost:8080/series/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: newSeriesInput.value, blogId: blogId })
+            })
+                .then(response => response.json())
+                .then(newSeries => {
+                    const newListItem = document.createElement('li');
+                    newListItem.className = 'list-group-item';
+
+                    const newSeriesRadio = document.createElement('input');
+                    newSeriesRadio.type = 'radio';
+                    newSeriesRadio.name = 'series';
+                    newSeriesRadio.value = newSeries.name;
+
+                    newListItem.appendChild(newSeriesRadio);
+                    newListItem.appendChild(document.createTextNode(newSeries.name));
+                    seriesList.appendChild(newListItem);
+
+                    newSeriesInput.value = '';
+                    newSeriesActions.classList.add('d-none');
+                });
+        });
+
+        cancelNewSeriesBtn.addEventListener('click', function () {
+            newSeriesInput.value = '';
+            newSeriesActions.classList.add('d-none');
+        });
+
+        cancelSeriesBtn.addEventListener('click', function () {
+            seriesArea.classList.add('d-none');
+        });
+
+        selectSeriesBtn.addEventListener('click', function () {
+            const selectedSeries = document.querySelector('input[name="series"]:checked');
+            if (selectedSeries) {
+                seriesInput.value = selectedSeries.value;
+                seriesArea.classList.add('d-none');
+            }
+        });
+    });
 </script>
 
 </body>

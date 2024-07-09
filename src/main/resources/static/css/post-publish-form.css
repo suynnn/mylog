@@ -73,7 +73,49 @@ textarea {
     height: 90%;
     max-width: none; /* Bootstrap 기본 최대 너비 제한 제거 */
 }
+
 .modal-content {
     height: 100%;
     border-radius: 0; /* 둥근 모서리 제거 */
+}
+
+/* 썸네일 업로드 스타일 */
+.thumbnail-upload-wrapper {
+    width: 100%;
+    height: 200px;
+    background-color: #e9ecef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 1px dashed #ced4da;
+    position: relative;
+}
+
+.thumbnail-upload-wrapper button {
+    z-index: 1;
+}
+
+.thumbnail-upload-wrapper input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.thumbnail-actions {
+    display: none;
+}
+
+.thumbnail-upload-wrapper:hover {
+    background-color: #dee2e6;
+}
+
+.thumbnail-upload-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 비율을 유지하면서 전체를 덮도록 설정 */
 }
