@@ -10,6 +10,7 @@ import org.mylog.domain.series.service.SeriesService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +33,10 @@ public class SeriesServiceImpl implements SeriesService {
                 .build();
 
         return seriesRepository.save(series);
+    }
+
+    @Override
+    public Optional<Series> findBySeriesId(Long id) {
+        return seriesRepository.findById(id);
     }
 }

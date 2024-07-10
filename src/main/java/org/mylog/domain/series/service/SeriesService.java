@@ -10,4 +10,6 @@ public interface SeriesService {
     List<Series> findAllByBlogId(Long id);
 
     Series registerSeries(SeriesRegisterDto seriesRegisterDto);
+
+    Optional<Series> findBySeriesId(Long id);
 }
