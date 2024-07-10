@@ -76,59 +76,61 @@
                 <h5 class="modal-title" id="publishModalLabel">출간하기</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-5">
-                        <h4>포스트 미리보기</h4>
-                        <div class="mb-3">
-                            <label for="thumbnailForm" class="form-label">썸네일</label>
-                            <div id="thumbnailWrapper" class="thumbnail-upload-wrapper">
-                                <button type="button" id="thumbnailUploadBtn" class="btn btn-secondary">썸네일 업로드</button>
-                                <input type="file" id="thumbnailForm" class="form-control">
-                            </div>
-                            <div class="thumbnail-actions" style="display: none;">
-                                <button type="button" id="reuploadThumbnail" class="btn btn-light btn-sm">재업로드</button>
-                                <button type="button" id="removeThumbnail" class="btn btn-light btn-sm">제거</button>
-                            </div>
+            <div class="modal-body d-flex">
+                <div class="col-md-5 h-100">
+                    <h4>포스트 미리보기</h4>
+                    <div class="mb-3">
+                        <label for="thumbnailForm" class="form-label">썸네일</label>
+                        <div id="thumbnailWrapper" class="thumbnail-upload-wrapper">
+                            <button type="button" id="thumbnailUploadBtn" class="btn btn-secondary">썸네일 업로드</button>
+                            <input type="file" id="thumbnailForm" class="form-control">
                         </div>
-                        <div class="mb-3">
-                            <label for="contentPreview" class="form-label">포스트 내용</label>
-                            <textarea id="contentPreview" class="form-control" rows="5" readonly></textarea>
+                        <div class="thumbnail-actions" style="display: none;">
+                            <button type="button" id="reuploadThumbnail" class="btn btn-light btn-sm">재업로드</button>
+                            <button type="button" id="removeThumbnail" class="btn btn-light btn-sm">제거</button>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <h4>공개 설정</h4>
-                        <div class="mb-3">
-                            <label for="visibility" class="form-label">공개 여부</label>
-                            <select id="visibility" class="form-select">
-                                <option value="false">공개</option>
-                                <option value="true">비공개</option>
-                            </select>
-                        </div>
-                        <h4>시리즈 설정</h4>
-                        <div class="mb-3">
-                            <input type="text" id="seriesInput" class="form-control" readonly>
-                            <button type="button" id="seriesRegisterBtn" class="btn btn-primary mt-2">등록</button>
-                        </div>
-                        <div id="seriesArea" class="d-none">
-                            <input type="text" id="newSeriesInput" class="form-control" placeholder="새 시리즈 추가">
-                            <div id="newSeriesActions" class="mt-2 d-none">
-                                <button type="button" id="cancelNewSeriesBtn" class="btn btn-secondary">취소</button>
-                                <button type="button" id="addNewSeriesBtn" class="btn btn-primary">시리즈 추가</button>
-                            </div>
-                            <ul id="seriesList" class="list-group mt-3"></ul>
-                            <div class="mt-3">
-                                <button type="button" id="cancelSeriesBtn" class="btn btn-secondary">취소</button>
-                                <button type="button" id="selectSeriesBtn" class="btn btn-primary">선택하기</button>
-                            </div>
-                        </div>
+                    <div class="mb-3">
+                        <label for="contentPreview" class="form-label">포스트 내용</label>
+                        <textarea id="contentPreview" class="form-control h-100" rows="5" readonly></textarea>
                     </div>
                 </div>
-                <button type="button" id="modalPublishBtn" class="btn btn-dark">출간하기</button>
+                <div class="col-md-6 h-100 ms-3">
+                    <h4>공개 설정</h4>
+                    <div class="mb-3">
+                        <label for="visibility" class="form-label">공개 여부</label>
+                        <select id="visibility" class="form-select">
+                            <option value="false">공개</option>
+                            <option value="true">비공개</option>
+                        </select>
+                    </div>
+                    <h4>시리즈 설정</h4>
+                    <div class="mb-3">
+                        <input type="text" id="seriesInput" class="form-control" readonly>
+                        <button type="button" id="seriesRegisterBtn" class="btn btn-primary mt-2">등록</button>
+                    </div>
+                    <div id="seriesArea" class="d-none">
+                        <input type="text" id="newSeriesInput" class="form-control" placeholder="새 시리즈 추가">
+                        <div id="newSeriesActions" class="mt-2 d-none">
+                            <button type="button" id="cancelNewSeriesBtn" class="btn btn-secondary">취소</button>
+                            <button type="button" id="addNewSeriesBtn" class="btn btn-primary">시리즈 추가</button>
+                        </div>
+                        <ul id="seriesList" class="list-group mt-3"></ul>
+                        <div class="mt-3">
+                            <button type="button" id="cancelSeriesBtn" class="btn btn-secondary">취소</button>
+                            <button type="button" id="selectSeriesBtn" class="btn btn-primary">선택하기</button>
+                        </div>
+                    </div>
+                    <div class="mt-3 d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="button" id="modalPublishBtn" class="btn btn-dark">출간하기</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 
 </body>
 </html>

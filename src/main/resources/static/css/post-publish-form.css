@@ -27,11 +27,29 @@ body {
     margin: auto;
 }
 
+/*.modal-body {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    height: 100%;*/
+/*}*/
+
 .modal-body {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+    justify-content: space-between;
+    height: calc(100vh - 150px);
+    overflow-y: auto;
+}
+
+.col-md-5,
+.col-md-6 {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.modal-body h4 {
+    margin-bottom: 20px;
 }
 
 .container-fluid {
