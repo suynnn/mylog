@@ -83,11 +83,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 썸네일 업로드 처리
     const thumbnailForm = document.getElementById('thumbnailForm');
+    const hiddenThumbnailInput = document.getElementById('hiddenThumbnailInput');
     const thumbnailWrapper = document.getElementById('thumbnailWrapper');
     const thumbnailActions = document.querySelector('.thumbnail-actions');
 
     function resetThumbnailButton() {
-        thumbnailWrapper.innerHTML = `<button type="button" id="thumbnailUploadBtn" class="btn btn-secondary">썸네일 업로드</button>`;
+        thumbnailWrapper.innerHTML = '<button type="button" id="thumbnailUploadBtn" class="btn btn-secondary">썸네일 업로드</button>';
         thumbnailActions.style.display = 'none';
         thumbnailForm.value = '';
         document.getElementById('thumbnailUploadBtn').addEventListener('click', function () {
@@ -101,12 +102,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     thumbnailForm.addEventListener('change', function () {
         if (thumbnailForm.files && thumbnailForm.files[0]) {
+            const file = thumbnailForm.files[0];
+            hiddenThumbnailInput.files = thumbnailForm.files;
+
             const reader = new FileReader();
             reader.onload = function (e) {
                 thumbnailWrapper.innerHTML = `<img src="${e.target.result}" alt="썸네일" style="width: 100%; height: 100%; object-fit: cover;">`;
                 thumbnailActions.style.display = 'block';
             };
-            reader.readAsDataURL(thumbnailForm.files[0]);
+            reader.readAsDataURL(file);
         }
     });
 
@@ -185,7 +189,14 @@ document.addEventListener('DOMContentLoaded', function () {
     addNewSeriesBtn.addEventListener('click', function () {
         const blogId = document.querySelector('[name="blogId"]').value;
 
-        fetch(`http://localhost:8080/series/register`, {
+        // Check for duplicate series name
+        const seriesNames = Array.from(seriesList.getElementsByTagName('li')).map(item => item.textContent.trim());
+        if (seriesNames.includes(newSeriesInput.value.trim())) {
+            alert('이미 존재하는 시리즈 이름입니다.');
+            return;
+        }
+
+        fetch('http://localhost:8080/series/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -202,20 +213,22 @@ document.addEventListener('DOMContentLoaded', function () {
                     const newSeriesRadio = document.createElement('input');
                     newSeriesRadio.type = 'radio';
                     newSeriesRadio.name = 'series';
-                    newSeriesRadio.value = newSeries.name;
+                    newSeriesRadio.value = newSeries.id; // 시리즈 ID를 값으로 설정
+                    newSeriesRadio.dataset.name = newSeries.name; // 시리즈 이름을 데이터 속성으로 설정
 
                     newListItem.appendChild(newSeriesRadio);
                     newListItem.appendChild(document.createTextNode(newSeries.name));
                     seriesList.appendChild(newListItem);
 
+                    // Clear the input and hide actions
                     newSeriesInput.value = '';
                     newSeriesActions.classList.add('d-none');
                 } else {
-                    console.error('Failed to add new series:', responseData.message);
+                    console.error('Failed to register series');
                 }
             })
             .catch(error => {
-                console.error('Error fetching series:', error);
+                console.error('Error registering new series:', error);
             });
     });
 
@@ -229,14 +242,25 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     selectSeriesBtn.addEventListener('click', function () {
-        const selectedSeries = document.querySelector('input[name="series"]:checked');
-        if (selectedSeries) {
-            const seriesName = selectedSeries.dataset.name; // 시리즈 이름 가져오기
-            const seriesId = selectedSeries.value; // 시리즈 ID 가져오기
+        const selectedSeriesRadio = document.querySelector('input[name="series"]:checked');
+        if (selectedSeriesRadio) {
+            const selectedSeriesName = selectedSeriesRadio.dataset.name;
+            const selectedSeriesId = selectedSeriesRadio.value;
+            seriesInput.value = selectedSeriesId;
+            seriesInput.dataset.name = selectedSeriesName; // 시리즈 이름을 데이터 속성으로 저장
 
-            seriesInput.value = seriesName;
-            document.getElementById('seriesId').value = seriesId; // hidden input에 시리즈 ID 설정
             seriesArea.classList.add('d-none');
+        } else {
+            alert('시리즈를 선택해주세요.');
         }
+    });
+
+    // 시리즈 선택/등록 시 시리즈 이름 업데이트
+    const seriesInputs = document.querySelectorAll('input[name="series"]');
+    seriesInputs.forEach(seriesInput => {
+        seriesInput.addEventListener('change', function () {
+            const selectedSeriesName = this.dataset.name;
+            seriesInput.dataset.name = selectedSeriesName; // 시리즈 이름을 데이터 속성으로 저장
+        });
     });
 });
