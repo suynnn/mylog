@@ -1,11 +1,13 @@
 package org.mylog.domain.series.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mylog.domain.series.domain.Series;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class SeriesDto {
     private Long id;
     private String name;

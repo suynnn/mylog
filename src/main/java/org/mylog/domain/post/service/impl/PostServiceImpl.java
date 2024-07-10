@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -43,10 +44,8 @@ public class PostServiceImpl implements PostService {
         }
 
         String thumbnailImg = null;
-        log.info("썸네일 {}", postPublishDto.getThumbnail());
         if (!postPublishDto.getThumbnail().isEmpty()) {
             thumbnailImg = fileStore.storeFile(postPublishDto.getThumbnail()).getStoreFileName();
-            log.info("실행되었음 {}", thumbnailImg);
         }
 
         Post post = Post.builder()
@@ -77,5 +76,10 @@ public class PostServiceImpl implements PostService {
         }
 
         return savedPost;
+    }
+
+    @Override
+    public List<Post> findAllPost() {
+        return postRepository.findAll();
     }
 }
