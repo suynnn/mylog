@@ -238,29 +238,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     cancelSeriesBtn.addEventListener('click', function () {
-        seriesArea.classList.add('d-none');
+        seriesArea.classList.add('d-none'); // Hide series area
     });
 
     selectSeriesBtn.addEventListener('click', function () {
-        const selectedSeriesRadio = document.querySelector('input[name="series"]:checked');
-        if (selectedSeriesRadio) {
-            const selectedSeriesName = selectedSeriesRadio.dataset.name;
-            const selectedSeriesId = selectedSeriesRadio.value;
-            seriesInput.value = selectedSeriesId;
-            seriesInput.dataset.name = selectedSeriesName; // 시리즈 이름을 데이터 속성으로 저장
-
-            seriesArea.classList.add('d-none');
-        } else {
-            alert('시리즈를 선택해주세요.');
+        const selectedSeries = document.querySelector('input[name="series"]:checked');
+        if (selectedSeries) {
+            const seriesName = selectedSeries.dataset.name;
+            seriesInput.value = seriesName;
+            document.getElementById('seriesId').value = selectedSeries.value; // 선택된 시리즈의 ID를 hidden input에 설정합니다.
         }
-    });
-
-    // 시리즈 선택/등록 시 시리즈 이름 업데이트
-    const seriesInputs = document.querySelectorAll('input[name="series"]');
-    seriesInputs.forEach(seriesInput => {
-        seriesInput.addEventListener('change', function () {
-            const selectedSeriesName = this.dataset.name;
-            seriesInput.dataset.name = selectedSeriesName; // 시리즈 이름을 데이터 속성으로 저장
-        });
+        seriesArea.classList.add('d-none'); // Hide series area
     });
 });
