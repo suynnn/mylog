@@ -1,0 +1,37 @@
+body {
+    background-color: #fff;
+    color: #000;
+}
+.post-info {
+    margin-bottom: 1em;
+    font-size: 0.9em;
+    color: #6c757d;
+}
+.post-tags {
+    margin-bottom: 1em;
+}
+.post-tags .btn {
+    margin-right: 0.5em;
+    margin-bottom: 0.5em;
+}
+.post-series {
+    margin-bottom: 1em;
+    font-size: 1em;
+    font-weight: bold;
+}
+.post-thumbnail img {
+    width: 100%;
+    height: auto;
+    max-width: 600px; /* 최대 너비 설정 */
+    display: block;
+    margin: 0 auto; /* 가운데 정렬 */
+}
+.post-content {
+    margin-top: 1em;
+}
+
+main {
+    margin: 0 auto;
+    padding: 0 2rem; /* 양쪽 여백 설정 */
+    max-width: 800px; /* 최대 너비 설정 */
+}

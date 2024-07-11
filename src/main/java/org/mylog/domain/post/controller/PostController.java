@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mylog.domain.post.domain.Post;
+import org.mylog.domain.post.dto.PostDto;
 import org.mylog.domain.post.dto.PostPublishDto;
 import org.mylog.domain.post.service.PostService;
 import org.mylog.domain.series.dto.SeriesRegisterDto;
@@ -67,6 +68,8 @@ public class PostController {
                 return "redirect:/";
             }
         }
+
+        model.addAttribute("postDto", new PostDto(post));
 
         return "post/post";
     }

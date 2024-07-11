@@ -20,5 +20,28 @@
 <body>
     <div th:replace="~{/fragment/navbar-fragment :: navbarFragment}"></div>
 
+    <div class="container mt-5">
+        <main>
+            <div class="mb-4">
+                <h1 th:text="${postDto.title}"></h1>
+                <div class="post-info">
+                    <span th:text="${postDto.user.username}"></span> •
+                    <span th:text="${postDto.updatedAt != null ? postDto.updatedAt : postDto.createdAt}"></span>
+                </div>
+            </div>
+            <div class="post-tags">
+                <button th:each="tag : ${postDto.postTags}" type="button" class="btn btn-outline-secondary btn-sm" th:text="${tag.tag.name}"></button>
+            </div>
+            <div class="post-series" th:if="${postDto.series != null}">
+                <span th:text="${postDto.series.name}"></span>
+            </div>
+            <div class="post-thumbnail" th:if="${postDto.thumbnailUrl != '/upload/null'}">
+                <img th:src="${postDto.thumbnailUrl}" alt="Thumbnail">
+            </div>
+            <div class="post-content">
+                <p th:utext="${postDto.content}"></p>
+            </div>
+        </main>
+    </div>
 </body>
 </html>

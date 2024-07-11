@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mylog.domain.post.domain.PostTag;
+import org.mylog.domain.tag.dto.TagDto;
 
 @Getter
 @Setter
@@ -11,11 +12,11 @@ import org.mylog.domain.post.domain.PostTag;
 public class PostTagDto {
     private Long id;
     private Long postId;
-    private Long tagId;
+    private TagDto tag;
 
     public PostTagDto(PostTag postTag) {
         this.id = postTag.getId();
         this.postId = postTag.getPost().getId();
-        this.tagId = postTag.getTag().getId();
+        this.tag = new TagDto(postTag.getTag());
     }
 }
