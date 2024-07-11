@@ -65,20 +65,7 @@ public class BlogController {
 
         Blog blog = user.getBlog();
 
-        BlogInfoDto blogInfoDto = BlogInfoDto.builder()
-                .id(blog.getId())
-                .title(blog.getTitle())
-                .intro(blog.getIntro())
-                .profileImg(uploadPath+blog.getProfileImg())
-                .email(blog.getEmail())
-                .github(blog.getGithub())
-                .isDeleted(blog.getIsDeleted())
-                .postList(blog.getPostList())
-                .seriesList(blog.getSeriesList())
-                .userId(blog.getUser().getId())
-                .username(blog.getUser().getUsername())
-                .nickname(blog.getUser().getNickname())
-                .build();
+        BlogInfoDto blogInfoDto = new BlogInfoDto(blog);
 
         model.addAttribute("blogInfoDto", blogInfoDto);
 

@@ -1,16 +1,18 @@
 package org.mylog.domain.blog.dto;
 
 import lombok.*;
+import org.mylog.domain.blog.domain.Blog;
 import org.mylog.domain.post.domain.Post;
+import org.mylog.domain.post.dto.PostDto;
 import org.mylog.domain.series.domain.Series;
+import org.mylog.domain.series.dto.SeriesDto;
+import org.mylog.domain.user.dto.UserDto;
 
 import java.util.List;
 
-@Builder
 @Getter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 public class BlogInfoDto {
     private Long id;
     private String title;
@@ -19,10 +21,21 @@ public class BlogInfoDto {
     private String email;
     private String github;
     private Boolean isDeleted;
-    private List<Post> postList;
-    private List<Series> seriesList;
+    private List<PostDto> postList;
+    private List<SeriesDto> seriesList;
 
-    private Long userId;
-    private String username;
-    private String nickname;
+    private UserDto user;
+
+    public BlogInfoDto(Blog blog) {
+        this.id = blog.getId();
+        this.title = blog.getTitle();
+        this.intro = blog.getIntro();
+        this.profileImg = "/upload/" + blog.getProfileImg();
+        this.email = blog.getEmail();
+        this.github = blog.getGithub();
+        this.isDeleted = blog.getIsDeleted();
+        this.postList = blog.getPostList().stream().map(PostDto::new).toList();
+        this.seriesList = blog.getSeriesList().stream().map(SeriesDto::new).toList();
+        this.user = new UserDto(blog.getUser());
+    }
 }
