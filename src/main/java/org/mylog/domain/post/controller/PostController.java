@@ -3,12 +3,15 @@ package org.mylog.domain.post.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mylog.domain.post.domain.Post;
 import org.mylog.domain.post.dto.PostPublishDto;
 import org.mylog.domain.post.service.PostService;
 import org.mylog.domain.series.dto.SeriesRegisterDto;
 import org.mylog.domain.tag.dto.TagRegisterDto;
 import org.mylog.global.security.CustomUserDetails;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +37,8 @@ public class PostController {
 
     @PostMapping("/publish")
     public String publishPost(@Valid @ModelAttribute("postPublishDto") PostPublishDto postPublishDto,
-                              BindingResult bindingResult) {
+                              BindingResult bindingResult,
+                              @AuthenticationPrincipal UserDetails userDetails) {
 
         if (bindingResult.hasErrors()) {
             return "post/post-publish-form";
@@ -44,12 +48,27 @@ public class PostController {
 
         Long postId = postService.publishPost(postPublishDto).getId();
 
-        return "redirect:/posts/" + postId;
+        return "redirect:/posts/@" + userDetails.getUsername() + "/" + postId;
     }
 
-    @GetMapping("/{postId}")
-    public String showPost(@PathVariable("postId") Long postId) {
+    @GetMapping("/@{username}/{id}")
+    public String showPost(@PathVariable("username") String username,
+                           @PathVariable("id") Long id,
+                           @AuthenticationPrincipal UserDetails userDetails,
+                           Model model) {
+
+        Post post = postService.findPostById(id).orElseThrow();
+
+        if (userDetails == null
+                || !username.equals(userDetails.getUsername())
+                || !userDetails.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+
+            if (post.getIsPrivate() || post.getIsTemp()) {
+                return "redirect:/";
+            }
+        }
 
         return "post/post";
     }
+
 }

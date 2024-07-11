@@ -19,11 +19,13 @@
 <body>
     <div th:replace="~{/fragment/navbar-fragment :: navbarFragment}"></div>
 
+    <div th:replace="~{/fragment/navbar-fragment :: navbarFragment}"></div>
+
     <div class="container my-5">
         <main>
             <ul class="row" id="post-list">
-                <li th:each="post : ${postDtoList}" class="col-md-3 mb-4" th:data-id="${post.id}">
-                    <div class="card post-card" th:onclick="|location.href='/posts/' + ${post.id}|">
+                <li th:each="post : ${postDtoList}" class="col-md-3 mb-4" th:data-id="${post.id}" th:data-username="${post.user.username}">
+                    <div class="card post-card">
                         <div th:if="${post.thumbnailUrl != '/upload/null'}" class="thumbnail-container">
                             <img th:src="${post.thumbnailUrl}" class="card-img-top" alt="Thumbnail">
                         </div>

@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -81,5 +82,10 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> findAllPost() {
         return postRepository.findAll();
+    }
+
+    @Override
+    public Optional<Post> findPostById(Long id) {
+        return postRepository.findById(id);
     }
 }
