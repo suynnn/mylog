@@ -31,6 +31,10 @@ public class HomeController {
         List<PostDto> postDtoList = posts.stream()
                 .map(PostDto::new).toList();
 
+        for (PostDto postDto : postDtoList) {
+            log.info("postDto {}", postDto);
+        }
+
         model.addAttribute("postDtoList", postDtoList);
 
         return "index";

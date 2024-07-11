@@ -5,6 +5,7 @@ import org.mylog.domain.comment.dto.CommentDto;
 import org.mylog.domain.like.dto.LikeDto;
 import org.mylog.domain.post.domain.Post;
 import org.mylog.domain.series.dto.SeriesDto;
+import org.mylog.domain.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,7 +25,7 @@ public class PostDto {
     private Boolean isDeleted;
     private String thumbnailUrl;
 
-    private Long userId;
+    private UserDto user;
     private Long blogId;
 
     private SeriesDto series;
@@ -42,8 +43,8 @@ public class PostDto {
         this.isTemp = post.getIsTemp();
         this.isPrivate = post.getIsPrivate();
         this.isDeleted = post.getIsDeleted();
-        this.thumbnailUrl = post.getThumbnailUrl();
-        this.userId = post.getUser().getId();
+        this.thumbnailUrl = "/upload/" + post.getThumbnailUrl();
+        this.user = new UserDto(post.getUser());
         this.blogId = post.getBlog().getId();
         this.series = post.getSeries() != null ? new SeriesDto(post.getSeries()) : null;
         this.comments = post.getComments().stream().map(CommentDto::new).toList();
