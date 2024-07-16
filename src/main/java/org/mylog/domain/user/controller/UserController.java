@@ -77,7 +77,7 @@ public class UserController {
     @PostMapping("/update")
     public String updateUser(@ModelAttribute("userUpdateDto") UserUpdateDto userUpdateDto) {
 
-        log.info("userUpdateDto {}", userUpdateDto);
+        userService.updateUser(userUpdateDto);
 
         return "redirect:/";
     }

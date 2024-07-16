@@ -20,7 +20,6 @@ public class UserUpdateDto {
     private String email;
     private String nickname;
     private LocalDateTime createdAt;
-    private Boolean isWithdrawal;
 
     public UserUpdateDto(User user) {
         this.id = user.getId();
@@ -30,6 +29,5 @@ public class UserUpdateDto {
         this.email = user.getEmail();
         this.nickname = user.getNickname();
         this.createdAt = user.getCreatedAt();
-        this.isWithdrawal = user.getIsWithdrawal();
     }
 }

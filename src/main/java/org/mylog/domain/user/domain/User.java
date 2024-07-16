@@ -2,9 +2,11 @@ package org.mylog.domain.user.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 import org.mylog.domain.blog.domain.Blog;
 import org.mylog.domain.follow.domain.Follow;
 import org.mylog.domain.like.domain.Like;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@DynamicUpdate // 수정된 필드에 대해 동적으로 update query 생성
 @Getter
 @Builder
 @Entity
@@ -61,4 +64,12 @@ public class User {
     @Setter
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserRole> userRoles = new ArrayList<>();
+
+    public void updateUserInfo(String password, String email, String nickname) {
+        if (password != null) {
+            this.password = password;
+        }
+        this.email = email;
+        this.nickname = nickname;
+    }
 }

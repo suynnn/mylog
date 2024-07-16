@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mylog.domain.user.domain.Role;
 import org.mylog.domain.user.domain.UserRole;
 import org.mylog.domain.user.dto.UserRegisterDto;
+import org.mylog.domain.user.dto.UserUpdateDto;
 import org.mylog.domain.user.repository.UserRepository;
 import org.mylog.domain.user.service.RoleService;
 import org.mylog.domain.user.service.UserRoleService;
@@ -71,5 +72,19 @@ public class UserServiceImpl implements UserService {
     public User findUserByUsername(String username) {
 
         return userRepository.findByUsername(username).orElse(null);
+    }
+
+    @Override
+    public Long updateUser(UserUpdateDto userUpdateDto) {
+        User user = userRepository.findById(userUpdateDto.getId()).orElseThrow();
+
+        String password = null;
+        if (!"".equals(userUpdateDto.getPassword())) {
+            password = passwordEncoder.encode(userUpdateDto.getPassword());
+        }
+
+        user.updateUserInfo(password, userUpdateDto.getEmail(), userUpdateDto.getNickname());
+
+        return user.getId();
     }
 }
