@@ -38,7 +38,7 @@
                                     <li><a class="dropdown-item" th:href="@{'/blogs/@' + ${#authentication.getName()}}">내 블로그</a></li>
                                     <li><a class="dropdown-item" href="#">임시 글</a></li>
                                     <li><a class="dropdown-item" href="#">읽기 목록</a></li>
-                                    <li><a class="dropdown-item" href="#">설정</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/users/update}">설정</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
                                 </ul>
@@ -94,7 +94,7 @@
                                     <li><a class="dropdown-item" th:href="@{'/blogs/@' + ${#authentication.getName()}}">내 블로그</a></li>
                                     <li><a class="dropdown-item" href="#">임시 글</a></li>
                                     <li><a class="dropdown-item" href="#">읽기 목록</a></li>
-                                    <li><a class="dropdown-item" href="#">설정</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/users/update}">설정</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
                                 </ul>

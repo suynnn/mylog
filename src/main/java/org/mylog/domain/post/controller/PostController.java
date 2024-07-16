@@ -39,7 +39,7 @@ public class PostController {
     @PostMapping("/publish")
     public String publishPost(@Valid @ModelAttribute("postPublishDto") PostPublishDto postPublishDto,
                               BindingResult bindingResult,
-                              @AuthenticationPrincipal UserDetails userDetails) {
+                              @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         if (bindingResult.hasErrors()) {
             return "post/post-publish-form";

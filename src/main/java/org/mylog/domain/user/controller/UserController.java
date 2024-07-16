@@ -10,8 +10,12 @@ import org.mylog.domain.blog.dto.BlogMakeDto;
 import org.mylog.domain.blog.service.BlogService;
 import org.mylog.domain.user.domain.User;
 import org.mylog.domain.user.dto.UserRegisterDto;
+import org.mylog.domain.user.dto.UserUpdateDto;
 import org.mylog.domain.user.service.LoginService;
 import org.mylog.domain.user.service.UserService;
+import org.mylog.global.security.CustomUserDetails;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,8 +44,7 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute("userRegisterDto") UserRegisterDto userRegisterDto,
-                               BindingResult bindingResult,
-                               HttpServletResponse response) {
+                               BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "user/user-register-form";
@@ -56,5 +59,32 @@ public class UserController {
         blogService.makeBlog(blogMakeDto);
 
         return "redirect:/login-form";
+    }
+
+    @GetMapping("/update")
+    public String updateUserForm(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                 Model model) {
+
+        User user = userService.findUserByUserId(userDetails.getUserId());
+
+        UserUpdateDto userUpdateDto = new UserUpdateDto(user);
+
+        model.addAttribute("userUpdateDto", userUpdateDto);
+
+        return "user/user-update-form";
+    }
+
+    @PostMapping("/update")
+    public String updateUser(@ModelAttribute("userUpdateDto") UserUpdateDto userUpdateDto) {
+
+        log.info("userUpdateDto {}", userUpdateDto);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/delete")
+    public String withdrawUser() {
+
+        return "user/user-withdraw-form";
     }
 }
