@@ -13,4 +13,6 @@ public interface UserService {
     User findUserByUsername(String username);
 
     Long updateUser(UserUpdateDto userUpdateDto);
+
+    void withdrawUser(Long userId);
 }

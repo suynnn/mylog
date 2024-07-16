@@ -9,10 +9,7 @@ import org.mylog.domain.like.domain.Like;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @DynamicUpdate // 수정된 필드에 대해 동적으로 update query 생성
 @Getter
@@ -71,5 +68,14 @@ public class User {
         }
         this.email = email;
         this.nickname = nickname;
+    }
+
+    public void deleteUser() {
+        this.username = UUID.randomUUID().toString().substring(0, 25);
+        this.password = UUID.randomUUID().toString();
+        this.name = "탈퇴한 사용자";
+        this.email = UUID.randomUUID().toString().substring(0, 25);
+        this.nickname = "탈퇴한 사용자";
+        this.isWithdrawal = true;
     }
 }

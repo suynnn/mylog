@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons CSS (optional) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Bootstrap JavaScript Bundle (Popper included) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link th:href="@{/css/post-withdraw-form.css}" rel="stylesheet" />
+    <link th:href="@{/css/fragment/navbar-fragment.css}" rel="stylesheet" />
+
+    <script th:src="@{/js/post-withdraw-form.js}"></script>
 </head>
 <body>
+<div th:replace="~{/fragment/navbar-fragment :: navbarFragment}"></div>
+
+<main class="container mt-5">
+    <div class="text-center">
+        <h4 class="mb-4">정말로 탈퇴하시겠습니까?</h4>
+        <form method="post" th:action="@{/users/delete}">
+            <button type="submit" class="btn btn-danger">탈퇴하기</button>
+        </form>
+    </div>
+</main>
 
 </body>
 </html>

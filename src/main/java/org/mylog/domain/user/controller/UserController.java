@@ -1,6 +1,7 @@
 package org.mylog.domain.user.controller;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.mylog.domain.user.dto.UserRegisterDto;
 import org.mylog.domain.user.dto.UserUpdateDto;
 import org.mylog.domain.user.service.LoginService;
 import org.mylog.domain.user.service.UserService;
+import org.mylog.global.jwt.service.RefreshTokenService;
 import org.mylog.global.security.CustomUserDetails;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +36,7 @@ public class UserController {
 
     private final UserService userService;
     private final BlogService blogService;
+    private final RefreshTokenService refreshTokenService;
 
     @GetMapping("/register")
     public String registerUserForm(Model model) {
@@ -83,8 +86,39 @@ public class UserController {
     }
 
     @GetMapping("/delete")
-    public String withdrawUser() {
+    public String withdrawUserForm() {
 
         return "user/user-withdraw-form";
+    }
+
+    @PostMapping("/delete")
+    public String withdrawUser(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
+
+        userService.withdrawUser(customUserDetails.getUserId());
+
+        Cookie[] cookies = request.getCookies();
+
+        for (Cookie cookie : cookies) {
+            if ("refreshToken".equals(cookie.getName())) {
+                if (refreshTokenService.findRefreshToken(cookie.getValue()).isPresent()) {
+                    refreshTokenService.deleteRefreshToken(cookie.getValue());
+                }
+
+            }
+        }
+        Cookie accessTokenCookie = new Cookie("accessToken", "");
+        accessTokenCookie.setMaxAge(0);
+        accessTokenCookie.setPath("/");
+
+        Cookie refreshTokenCookie = new Cookie("refreshToken", "");
+        refreshTokenCookie.setMaxAge(0);
+        refreshTokenCookie.setPath("/");
+
+        response.addCookie(accessTokenCookie);
+        response.addCookie(refreshTokenCookie);
+
+        return "redirect:/";
     }
 }

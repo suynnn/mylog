@@ -87,4 +87,11 @@ public class UserServiceImpl implements UserService {
 
         return user.getId();
     }
+
+    @Override
+    public void withdrawUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+
+        user.deleteUser();
+    }
 }
