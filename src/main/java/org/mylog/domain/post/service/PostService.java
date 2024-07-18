@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface PostService {
     Post publishPost(PostPublishDto postPublishDto);
 
-    List<Post> findAllPost();
+    List<Post> findAllPostByDesc();
 
     Optional<Post> findPostById(Long id);
 

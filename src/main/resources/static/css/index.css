@@ -71,3 +71,17 @@ ul {
     padding-left: 0.25rem; /* 카드 간의 간격을 줄임 */
     padding-right: 0.25rem;
 }
+
+.nav-pills .nav-link {
+    color: #343a40; /* 진한 회색 글씨 */
+}
+
+.nav-pills .nav-link.active {
+    color: #343a40; /* 진한 회색 글씨 */
+    background-color: transparent; /* 배경 투명 */
+    border-bottom: 2px solid #343a40; /* 밑줄 추가 */
+}
+
+.nav-pills .nav-link:hover {
+    border-bottom: 2px solid #343a40; /* 호버 시 밑줄 추가 */
+}

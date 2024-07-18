@@ -19,36 +19,51 @@
 <body>
     <div th:replace="~{/fragment/navbar-fragment :: navbarFragment}"></div>
 
-    <div th:replace="~{/fragment/navbar-fragment :: navbarFragment}"></div>
-
     <div class="container my-5">
         <main>
-            <ul class="row" id="post-list">
-                <li th:each="post : ${postDtoList}" class="col-md-3 mb-4" th:data-id="${post.id}" th:data-username="${post.user.username}">
-                    <div class="card post-card">
-                        <div th:if="${post.thumbnailUrl != '/upload/null'}" class="thumbnail-container">
-                            <img th:src="${post.thumbnailUrl}" class="card-img-top" alt="Thumbnail">
-                        </div>
-                        <div class="card-body post-card-content">
-                            <h5 class="card-title" th:text="${post.title}"></h5>
-                            <p class="card-text">
-                                <span th:if="${post.content.length() > 150}" th:text="${post.content.substring(0, 150)} + '...'"></span>
-                                <span th:if="${post.content.length() <= 150}" th:text="${post.content}"></span>
-                            </p>
-                            <div class="text-muted">
-                                <small th:text="${post.createdAt}"></small>
-<!--                                <small th:text="'댓글 ' + ${post.comments.size()} + '개'"></small>-->
+            <div class="post-bar mb-4">
+                <nav>
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/">최신 순</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">조회수 높은 순</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">좋아요 순</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div>
+                <ul class="row" id="post-list">
+                    <li th:each="post : ${postDtoList}" class="col-md-3 mb-4" th:data-id="${post.id}" th:data-username="${post.user.username}">
+                        <div class="card post-card">
+                            <div th:if="${post.thumbnailUrl != '/upload/null'}" class="thumbnail-container">
+                                <img th:src="${post.thumbnailUrl}" class="card-img-top" alt="Thumbnail">
+                            </div>
+                            <div class="card-body post-card-content">
+                                <h5 class="card-title" th:text="${post.title}"></h5>
+                                <p class="card-text">
+                                    <span th:if="${post.content.length() > 150}" th:text="${post.content.substring(0, 150)} + '...'"></span>
+                                    <span th:if="${post.content.length() <= 150}" th:text="${post.content}"></span>
+                                </p>
+                                <div class="text-muted">
+                                    <small th:text="${post.createdAt}"></small>
+                                    <!-- <small th:text="'댓글 ' + ${post.comments.size()} + '개'"></small> -->
+                                </div>
+                            </div>
+                            <div class="card-footer post-card-footer">
+                                <div>
+                                    <small th:text="${post.user.username}"></small>
+                                    <small th:text="'좋아요 ' + ${post.likes.size()}"></small>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-footer post-card-footer">
-                            <div>
-                                <small th:text="${post.user.username}"></small>
-                                <small th:text="'좋아요 ' + ${post.likes.size()}"></small>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
         </main>
     </div>
 

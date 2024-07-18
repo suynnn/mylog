@@ -23,7 +23,7 @@ public class HomeController {
     @GetMapping
     public String homeLogin(Model model) {
 
-        List<Post> posts = postService.findAllPost().stream()
+        List<Post> posts = postService.findAllPostByDesc().stream()
                 .filter(post -> !post.getIsDeleted())
                 .filter(post -> !post.getIsPrivate())
                 .filter(post -> !post.getIsTemp()).toList();

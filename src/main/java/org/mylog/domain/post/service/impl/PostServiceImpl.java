@@ -80,8 +80,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> findAllPost() {
-        return postRepository.findAll();
+    public List<Post> findAllPostByDesc() {
+        return postRepository.findAllByOrderByCreatedAtDesc();
     }
 
     @Override
