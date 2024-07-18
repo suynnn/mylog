@@ -22,9 +22,9 @@ body {
 .post-thumbnail img {
     width: 100%;
     height: auto;
-    max-width: 600px; /* 최대 너비 설정 */
+    max-width: 600px;
     display: block;
-    margin: 0 auto; /* 가운데 정렬 */
+    margin: 0 auto;
 }
 .post-content {
     margin-top: 1em;
@@ -32,8 +32,8 @@ body {
 
 main {
     margin: 0 auto;
-    padding: 0 2rem; /* 양쪽 여백 설정 */
-    max-width: 800px; /* 최대 너비 설정 */
+    padding: 0 2rem;
+    max-width: 800px;
 }
 
 .comment-write textarea {
@@ -55,18 +55,28 @@ main {
 }
 
 .comment-info {
-    display: flex; /* Flexbox를 사용하여 내부 요소를 정렬 */
-    align-items: center; /* 세로 중앙 정렬 */
+    display: flex;
+    align-items: center;
 }
 
 .profile-image {
-    width: 30px; /* 이미지 너비 조정 */
-    height: 30px; /* 이미지 높이 조정 */
-    border-radius: 50%; /* 동그란 테두리 설정 */
-    object-fit: cover; /* 이미지 비율 유지하며 자르기 */
-    margin-right: 8px; /* 닉네임과의 간격 설정 */
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
 }
 
 .comment-content {
-    margin-top: 8px; /* 댓글 내용 위 여백 추가 */
+    margin-top: 8px;
+}
+
+.reply-form {
+    margin-top: 10px;
+}
+
+.replies {
+    margin-left: 20px;
+    padding-left: 10px;
+    border-left: 2px solid #ddd;
 }

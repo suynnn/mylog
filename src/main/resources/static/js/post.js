@@ -29,38 +29,129 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function renderComments(comments) {
         commentList.innerHTML = '';
+
+        const commentMap = {};
+
         comments.forEach(commentDto => {
-            const commentItem = document.createElement('div');
-            commentItem.classList.add('comment-item');
+            commentMap[commentDto.id] = commentDto;
+            commentDto.replies = [];
+        });
 
-            const commentInfo = document.createElement('div');
-            commentInfo.classList.add('comment-info');
+        comments.forEach(commentDto => {
+            if (commentDto.parentId !== null) {
+                commentMap[commentDto.parentId].replies.push(commentDto);
+            }
+        });
 
-            // 프로필 이미지를 포함한 닉네임 및 생성일 정보
-            const profileImage = document.createElement('img');
-            profileImage.src = `${commentDto.profile}`; // 프로필 이미지 URL 설정
-            profileImage.alt = 'Profile Image';
-            profileImage.classList.add('profile-image');
-            commentInfo.appendChild(profileImage); // 프로필 이미지 추가
-
-            const infoText = document.createElement('span');
-            infoText.textContent = `${commentDto.nickname} • ${new Date(commentDto.createdAt).toLocaleString()}`;
-            commentInfo.appendChild(infoText); // 닉네임과 생성일 추가
-
-            const commentContent = document.createElement('div');
-            commentContent.classList.add('comment-content');
-            commentContent.textContent = commentDto.content;
-
-            commentItem.appendChild(commentInfo);
-            commentItem.appendChild(commentContent);
-            commentList.appendChild(commentItem);
+        comments.forEach(commentDto => {
+            if (commentDto.parentId === null) {
+                renderCommentItem(commentDto, commentList, 0);
+            }
         });
     }
 
+    function renderCommentItem(commentDto, commentContainer, depth) {
+        const commentItem = document.createElement('div');
+        commentItem.classList.add('comment-item');
+        commentItem.dataset.commentId = commentDto.id;
+        commentItem.dataset.commentClass = commentDto.commentClass;
+
+        const commentInfo = document.createElement('div');
+        commentInfo.classList.add('comment-info');
+
+        const profileImage = document.createElement('img');
+        profileImage.src = `${commentDto.profile}`;
+        profileImage.alt = 'Profile Image';
+        profileImage.classList.add('profile-image');
+        commentInfo.appendChild(profileImage);
+
+        const infoText = document.createElement('span');
+        infoText.textContent = `${commentDto.nickname} • ${new Date(commentDto.createdAt).toLocaleString()}`;
+        commentInfo.appendChild(infoText);
+
+        const commentContent = document.createElement('div');
+        commentContent.classList.add('comment-content');
+        commentContent.textContent = commentDto.content;
+
+        const replyButton = document.createElement('button');
+        replyButton.classList.add('btn', 'btn-link', 'btn-sm');
+        replyButton.textContent = '답글달기';
+        replyButton.addEventListener('click', function () {
+            toggleReplyForm(commentItem);
+        });
+
+        const replyForm = document.createElement('div');
+        replyForm.classList.add('reply-form', 'd-none');
+        replyForm.innerHTML = `
+            <textarea class="form-control mb-2" rows="2" placeholder="답글을 작성하세요..."></textarea>
+            <button class="btn btn-primary btn-sm">답글 작성</button>
+        `;
+        replyForm.querySelector('button').addEventListener('click', function () {
+            submitReply(commentDto.id, commentDto.commentClass + 1, replyForm.querySelector('textarea').value, commentItem);
+        });
+
+        commentItem.appendChild(commentInfo);
+        commentItem.appendChild(commentContent);
+        commentItem.appendChild(replyButton);
+        commentItem.appendChild(replyForm);
+
+        const repliesContainer = document.createElement('div');
+        repliesContainer.classList.add('replies', `depth-${depth}`);
+        commentItem.appendChild(repliesContainer);
+
+        commentContainer.appendChild(commentItem);
+
+        commentDto.replies.forEach(replyDto => {
+            renderCommentItem(replyDto, repliesContainer, depth + 1);
+        });
+    }
+
+    function toggleReplyForm(commentItem) {
+        const replyForm = commentItem.querySelector('.reply-form');
+        replyForm.classList.toggle('d-none');
+    }
 
     function updatePagination(pageData) {
         prevPageButton.parentElement.classList.toggle('disabled', pageData.first);
         nextPageButton.parentElement.classList.toggle('disabled', pageData.last);
+    }
+
+    function submitReply(parentId, commentClass, content, commentItem) {
+        if (!content.trim()) {
+            alert('답글 내용을 입력하세요.');
+            return;
+        }
+
+        const postId = document.querySelector('input[name="postId"]').value;
+        const userId = document.querySelector('input[name="commentUserId"]').value;
+
+        const replyData = {
+            content: content,
+            commentClass: commentClass,
+            parentId: parentId,
+            userId: userId,
+            postId: postId
+        };
+
+        fetch('http://localhost:8080/api/comments/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(replyData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.responseStatus === 'OK') {
+                    fetchComments(currentPage);
+                } else {
+                    alert('답글 작성에 실패했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('답글 작성 중 오류가 발생했습니다.');
+            });
     }
 
     submitCommentButton.addEventListener('click', function () {
@@ -75,10 +166,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const commentData = {
             content: content,
-            commentClass: 0, // 댓글 클래스 0으로 설정
-            parentId: null, // 부모 댓글 ID는 null
-            userId: userId, // 현재 로그인된 사용자 ID
-            postId: postId // 현재 게시글 ID
+            commentClass: 0,
+            parentId: null,
+            userId: userId,
+            postId: postId
         };
 
         fetch('http://localhost:8080/api/comments/register', {
@@ -91,9 +182,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.responseStatus === 'OK') {
-                    const commentDto = data.data;
-                    fetchComments(currentPage); // 새 댓글 등록 후 페이지 갱신
-                    commentContent.value = ''; // 입력 필드 비우기
+                    fetchComments(currentPage);
+                    commentContent.value = '';
                 } else {
                     alert('댓글 작성에 실패했습니다.');
                 }
@@ -118,5 +208,5 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchComments(currentPage);
     });
 
-    fetchComments(currentPage); // 페이지 로드 시 첫 댓글 페이지 가져오기
+    fetchComments(currentPage);
 });
