@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const commentList = document.querySelector('.comment-list');
     const prevPageButton = document.getElementById('prevPage');
     const nextPageButton = document.getElementById('nextPage');
+    const currentUserId = document.getElementById('currentUserId') != null ? document.getElementById('currentUserId').value : null; // 현재 로그인한 사용자 ID
 
     let currentPage = 0;
     const pageSize = 20;
@@ -84,7 +85,11 @@ document.addEventListener('DOMContentLoaded', function () {
         deleteButton.classList.add('btn', 'btn-danger', 'btn-sm');
         deleteButton.textContent = '삭제';
         deleteButton.addEventListener('click', function () {
-            deleteComment(commentDto.id);
+            if (currentUserId == commentDto.userId) {
+                deleteComment(commentDto.id);
+            } else {
+                alert('자신이 작성한 댓글만 삭제할 수 있습니다.');
+            }
         });
 
         const replyForm = document.createElement('div');
@@ -94,7 +99,11 @@ document.addEventListener('DOMContentLoaded', function () {
             <button class="btn btn-primary btn-sm">답글 작성</button>
         `;
         replyForm.querySelector('button').addEventListener('click', function () {
-            submitReply(commentDto.id, commentDto.commentClass + 1, replyForm.querySelector('textarea').value, commentItem);
+            if (currentUserId) {
+                submitReply(commentDto.id, commentDto.commentClass + 1, replyForm.querySelector('textarea').value, commentItem);
+            } else {
+                alert('로그인한 사용자만 답글을 작성할 수 있습니다.');
+            }
         });
 
         commentItem.appendChild(commentInfo);
@@ -184,6 +193,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     submitCommentButton.addEventListener('click', function () {
+        if (!currentUserId) {
+            alert('로그인한 사용자만 댓글을 작성할 수 있습니다.');
+            return;
+        }
+
         const content = commentContent.value.trim();
         if (content === '') {
             alert('댓글 내용을 입력하세요.');

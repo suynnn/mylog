@@ -45,7 +45,9 @@
 
             <div class="comment mt-5">
                 <input type="hidden" name="postId" th:value="${postDto.id}">
-                <input type="hidden" name="commentUserId" th:value="${#authentication.principal.getUserId()}">
+
+                <input sec:authorize="isAuthenticated()" type="hidden" name="commentUserId" th:value="${#authentication.principal.getUserId()}" />
+                <input sec:authorize="isAuthenticated()" type="hidden" id="currentUserId" th:value="${#authentication.principal.getUserId()}" />
 
                 <div class="comment-write mb-3">
                     <textarea id="commentContent" class="form-control" rows="3" placeholder="댓글을 작성하세요..."></textarea>
