@@ -15,4 +15,8 @@ public interface UserService {
     Long updateUser(UserUpdateDto userUpdateDto);
 
     void withdrawUser(Long userId);
+
+    Boolean existsUserId(String username);
+
+    Boolean existsEmail(String email);
 }

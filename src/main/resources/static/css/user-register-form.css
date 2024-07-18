@@ -24,3 +24,13 @@ body {
 .btn-primary:hover {
     background-color: #444;
 }
+.input-group {
+    display: flex;
+    align-items: center;
+}
+.input-group .form-control {
+    flex: 1;
+}
+.input-group button {
+    margin-left: 10px;
+}

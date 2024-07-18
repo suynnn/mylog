@@ -94,4 +94,14 @@ public class UserServiceImpl implements UserService {
 
         user.deleteUser();
     }
+
+    @Override
+    public Boolean existsUserId(String username) {
+        return userRepository.existsUserByUsername(username);
+    }
+
+    @Override
+    public Boolean existsEmail(String email) {
+        return userRepository.existsUserByEmail(email);
+    }
 }
