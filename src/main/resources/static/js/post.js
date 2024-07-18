@@ -35,7 +35,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const commentInfo = document.createElement('div');
             commentInfo.classList.add('comment-info');
-            commentInfo.textContent = `${commentDto.nickname} • ${new Date(commentDto.createdAt).toLocaleString()}`;
+
+            // 프로필 이미지를 포함한 닉네임 및 생성일 정보
+            const profileImage = document.createElement('img');
+            profileImage.src = `${commentDto.profile}`; // 프로필 이미지 URL 설정
+            profileImage.alt = 'Profile Image';
+            profileImage.classList.add('profile-image');
+            commentInfo.appendChild(profileImage); // 프로필 이미지 추가
+
+            const infoText = document.createElement('span');
+            infoText.textContent = `${commentDto.nickname} • ${new Date(commentDto.createdAt).toLocaleString()}`;
+            commentInfo.appendChild(infoText); // 닉네임과 생성일 추가
 
             const commentContent = document.createElement('div');
             commentContent.classList.add('comment-content');
@@ -46,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
             commentList.appendChild(commentItem);
         });
     }
+
 
     function updatePagination(pageData) {
         prevPageButton.parentElement.classList.toggle('disabled', pageData.first);

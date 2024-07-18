@@ -28,7 +28,6 @@ public class PostDto {
     private Long blogId;
 
     private SeriesDto series;
-    private List<CommentDto> comments;
     private List<LikeDto> likes;
     private List<PostImageDto> postImages;
     private List<PostTagDto> postTags;
@@ -46,7 +45,6 @@ public class PostDto {
         this.user = new UserDto(post.getUser());
         this.blogId = post.getBlog().getId();
         this.series = post.getSeries() != null ? new SeriesDto(post.getSeries()) : null;
-        this.comments = post.getComments().stream().map(CommentDto::new).toList();
         this.likes = post.getLikes().stream().map(LikeDto::new).toList();
         this.postImages = post.getPostImages().stream().map(PostImageDto::new).toList();
         this.postTags = post.getPostTags().stream().map(PostTagDto::new).toList();

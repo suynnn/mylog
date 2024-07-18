@@ -21,6 +21,7 @@ public class CommentDto {
 
     private Long userId;
     private String nickname;
+    private String profile;
 
     private Long postId;
 
@@ -34,6 +35,7 @@ public class CommentDto {
         this.isDeleted = comment.getIsDeleted();
         this.userId = comment.getUser().getId();
         this.nickname = comment.getUser().getNickname();
+        this.profile = "/upload/" + comment.getUser().getBlog().getProfileImg();
         this.postId = comment.getPost().getId();
     }
 }
