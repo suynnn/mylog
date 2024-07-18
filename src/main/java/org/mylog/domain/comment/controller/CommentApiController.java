@@ -59,4 +59,19 @@ public class CommentApiController {
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Message> deleteComment(@PathVariable("id")Long id) {
+        boolean deleteSuccess = commentService.deleteComment(id);
+
+        Message message = new Message();
+        message.setResponseStatus(ResponseStatus.OK);
+        message.setMessage("성공 코드");
+        message.setData(deleteSuccess);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
 }

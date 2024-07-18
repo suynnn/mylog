@@ -13,5 +13,5 @@ public interface CommentService {
 
     Comment saveComment(CommentRegisterDto commentRegisterDto);
 
-    void deleteComment(Long id);
+    boolean deleteComment(Long id);
 }

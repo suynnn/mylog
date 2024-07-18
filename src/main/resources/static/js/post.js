@@ -73,11 +73,18 @@ document.addEventListener('DOMContentLoaded', function () {
         commentContent.classList.add('comment-content');
         commentContent.textContent = commentDto.content;
 
-        const replyButton = document.createElement('button');
-        replyButton.classList.add('btn', 'btn-link', 'btn-sm');
-        replyButton.textContent = '답글달기';
-        replyButton.addEventListener('click', function () {
-            toggleReplyForm(commentItem);
+        const toggleRepliesButton = document.createElement('button');
+        toggleRepliesButton.classList.add('btn', 'btn-link', 'btn-sm');
+        toggleRepliesButton.textContent = '답글보기';
+        toggleRepliesButton.addEventListener('click', function () {
+            toggleRepliesVisibility(commentItem, toggleRepliesButton);
+        });
+
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('btn', 'btn-danger', 'btn-sm');
+        deleteButton.textContent = '삭제';
+        deleteButton.addEventListener('click', function () {
+            deleteComment(commentDto.id);
         });
 
         const replyForm = document.createElement('div');
@@ -92,11 +99,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         commentItem.appendChild(commentInfo);
         commentItem.appendChild(commentContent);
-        commentItem.appendChild(replyButton);
+        commentItem.appendChild(toggleRepliesButton);
+        commentItem.appendChild(deleteButton);
         commentItem.appendChild(replyForm);
 
         const repliesContainer = document.createElement('div');
-        repliesContainer.classList.add('replies', `depth-${depth}`);
+        repliesContainer.classList.add('replies', `depth-${depth}`, 'd-none');
         commentItem.appendChild(repliesContainer);
 
         commentContainer.appendChild(commentItem);
@@ -106,9 +114,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function toggleReplyForm(commentItem) {
+    function toggleRepliesVisibility(commentItem, toggleButton) {
+        const repliesContainer = commentItem.querySelector('.replies');
         const replyForm = commentItem.querySelector('.reply-form');
-        replyForm.classList.toggle('d-none');
+        const isHidden = repliesContainer.classList.toggle('d-none');
+        replyForm.classList.toggle('d-none', isHidden);
+        toggleButton.textContent = isHidden ? '답글보기' : '답글숨기기';
     }
 
     function updatePagination(pageData) {
@@ -151,6 +162,24 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => {
                 console.error('Error:', error);
                 alert('답글 작성 중 오류가 발생했습니다.');
+            });
+    }
+
+    function deleteComment(commentId) {
+        fetch(`http://localhost:8080/api/comments/delete/${commentId}`, {
+            method: 'DELETE',
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.responseStatus === 'OK') {
+                    fetchComments(currentPage);
+                } else {
+                    alert('댓글 삭제에 실패했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('댓글 삭제 중 오류가 발생했습니다.');
             });
     }
 

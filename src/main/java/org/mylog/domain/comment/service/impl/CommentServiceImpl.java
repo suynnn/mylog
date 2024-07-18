@@ -14,11 +14,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
@@ -26,6 +27,7 @@ public class CommentServiceImpl implements CommentService {
     private final UserService userService;
     private final PostService postService;
 
+    @Transactional(readOnly = true)
     public Page<CommentDto> getCommentsByPostId(Long postId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Comment> comments = commentRepository.findByPostIdOrderByCreatedAtDesc(postId, pageable);
@@ -53,13 +55,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(Long id) {
+    public boolean deleteComment(Long id) {
         if (!commentRepository.existsByParentId(id)) {
             commentRepository.deleteById(id);
-            return;
+        } else {
+            Comment comment = commentRepository.findById(id).orElseThrow();
+            comment.deleteComment();
         }
 
-        Comment comment = commentRepository.findById(id).orElseThrow();
-        comment.deleteComment();
+        return true;
     }
 }
