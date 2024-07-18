@@ -21,7 +21,7 @@
 
 ### 1. 회원가입
 - [x] 회원 가입폼
-- [ ] 같은 ID, Email Check API
+- [x] 같은 ID, Email Check API
 - [x] 회원 등록 기능
 - [x] 회원 가입 후 로그인 폼으로 이동
 
