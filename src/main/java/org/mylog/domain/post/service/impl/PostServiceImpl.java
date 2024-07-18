@@ -88,4 +88,44 @@ public class PostServiceImpl implements PostService {
     public Optional<Post> findPostById(Long id) {
         return postRepository.findById(id);
     }
+
+    @Override
+    public List<Post> findTempPostsByUserId(Long userId) {
+        return postRepository.findPostsByUserIdAndIsTempAndIsDeletedOrderByCreatedAtDesc(userId, true, false);
+    }
+
+    @Override
+    public Post updatePost(Long postId, PostPublishDto postPublishDto) {
+
+        Post post = postRepository.findById(postId).orElseThrow();
+
+        Series series = null;
+        if (postPublishDto.getSeriesId() != null) {
+            series = seriesService.findBySeriesId(postPublishDto.getSeriesId()).orElseThrow();
+        }
+
+        String thumbnailImg = null;
+        if (!postPublishDto.getThumbnail().isEmpty()) {
+            thumbnailImg = fileStore.storeFile(postPublishDto.getThumbnail()).getStoreFileName();
+        }
+
+        post.updatePost(postPublishDto.getTitle(), postPublishDto.getContent(), postPublishDto.getIsTemp(), postPublishDto.getIsPrivate(), thumbnailImg, series);
+
+        postTagService.deleteByPostId(postId);
+
+        for (String tagName : postPublishDto.getTags()) {
+            log.info("tagName {} ", tagName);
+            Tag tag;
+
+            if (!tagService.existsTagByName(tagName)) {
+                tag = tagService.saveTag(tagName);
+            } else {
+                tag = tagService.findByTagName(tagName).orElseThrow();
+            }
+
+            postTagService.savePostTag(post, tag);
+        }
+
+        return post;
+    }
 }

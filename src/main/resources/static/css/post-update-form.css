@@ -1,0 +1,139 @@
+body {
+    background-color: #fff;
+    color: #000;
+    font-family: 'Arial', sans-serif;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.tag-btn {
+    margin: 10px 5px;
+}
+
+.tag-btn:hover {
+    background-color: #444;
+}
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.modal-content {
+    width: 90%;
+    height: 90%;
+    margin: auto;
+}
+
+/*.modal-body {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    height: 100%;*/
+/*}*/
+
+.modal-body {
+    display: flex;
+    justify-content: space-between;
+    height: calc(100vh - 150px);
+    overflow-y: auto;
+}
+
+.col-md-5,
+.col-md-6 {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.modal-body h4 {
+    margin-bottom: 20px;
+}
+
+.container-fluid {
+    height: 100vh; /* 화면 전체 높이 */
+}
+
+.row {
+    height: 80%;
+}
+
+.col-md-6 {
+    height: 100%;
+    overflow-y: auto; /* 내용이 길어질 경우 스크롤 */
+    padding: 20px;
+}
+
+.preview-pane {
+    height: 100%;
+    background-color: #f8f9fa;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.preview-pane h3 {
+    margin-bottom: 20px;
+}
+
+.preview-pane > div {
+    margin-bottom: 20px;
+}
+
+textarea {
+    resize: none; /* 사용자가 textarea 크기를 조절하지 못하도록 설정 */
+
+}
+
+.modal-dialog {
+    width: 90%;
+    height: 90%;
+    max-width: none; /* Bootstrap 기본 최대 너비 제한 제거 */
+}
+
+.modal-content {
+    height: 100%;
+    border-radius: 0; /* 둥근 모서리 제거 */
+}
+
+/* 썸네일 업로드 스타일 */
+.thumbnail-upload-wrapper {
+    width: 100%;
+    height: 200px;
+    background-color: #e9ecef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 1px dashed #ced4da;
+    position: relative;
+}
+
+.thumbnail-upload-wrapper button {
+    z-index: 1;
+}
+
+.thumbnail-upload-wrapper input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.thumbnail-actions {
+    display: none;
+}
+
+.thumbnail-upload-wrapper:hover {
+    background-color: #dee2e6;
+}
+
+.thumbnail-upload-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 비율을 유지하면서 전체를 덮도록 설정 */
+}

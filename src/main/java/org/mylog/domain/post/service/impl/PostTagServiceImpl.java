@@ -25,4 +25,9 @@ public class PostTagServiceImpl implements PostTagService {
 
         postTagRepository.save(postTag);
     }
+
+    @Override
+    public void deleteByPostId(Long postId) {
+        postTagRepository.deletePostTagsByPostId(postId);
+    }
 }

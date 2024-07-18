@@ -77,4 +77,14 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private Set<PostTag> postTags = new HashSet<>();
+
+    public void updatePost(String title, String content, Boolean isTemp, Boolean isPrivate, String thumbnailUrl, Series series) {
+        this.title = title;
+        this.content = content;
+        this.updatedAt = LocalDateTime.now();
+        this.isTemp = isTemp;
+        this.isPrivate = isPrivate;
+        this.thumbnailUrl = thumbnailUrl;
+        this.series = series;
+    }
 }

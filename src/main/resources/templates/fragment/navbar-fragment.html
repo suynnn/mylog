@@ -37,7 +37,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu1">
                                     <li><a class="dropdown-item" th:href="@{'/blogs/@' + ${#authentication.getName()}}">내 블로그</a></li>
-                                    <li><a class="dropdown-item" href="#">임시 글</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/posts/temps}">임시 글</a></li>
                                     <li><a class="dropdown-item" href="#">읽기 목록</a></li>
                                     <li><a class="dropdown-item" th:href="@{/users/update}">설정</a></li>
                                     <li><hr class="dropdown-divider"></li>
@@ -93,7 +93,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu2">
                                     <li><a class="dropdown-item" th:href="@{'/blogs/@' + ${#authentication.getName()}}">내 블로그</a></li>
-                                    <li><a class="dropdown-item" href="#">임시 글</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/posts/temps}">임시 글</a></li>
                                     <li><a class="dropdown-item" href="#">읽기 목록</a></li>
                                     <li><a class="dropdown-item" th:href="@{/users/update}">설정</a></li>
                                     <li><hr class="dropdown-divider"></li>

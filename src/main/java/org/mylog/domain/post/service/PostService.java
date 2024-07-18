@@ -13,4 +13,7 @@ public interface PostService {
 
     Optional<Post> findPostById(Long id);
 
+    List<Post>findTempPostsByUserId(Long userId);
+
+    Post updatePost(Long postId, PostPublishDto postPublishDto);
 }
