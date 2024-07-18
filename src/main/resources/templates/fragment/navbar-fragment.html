@@ -30,6 +30,7 @@
                         </div>
                         <div sec:authorize="isAuthenticated()" class="button-icon-container">
                             <button class="btn btn-outline-dark" th:onclick="|location.href='@{/posts/publish}'|">새 글 작성</button>
+                            <span style="margin-left: 15px" th:text="${#authentication.principal.username}"></span><span>님 </span>
                             <div class="dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="userMenu1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person"></i>
