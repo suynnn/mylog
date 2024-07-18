@@ -6,6 +6,18 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('register-button').disabled = !(isUsernameValid && isEmailValid);
     }
 
+    function checkPasswordMatch() {
+        const passwordInput = document.getElementById('password');
+        const passwordCheckInput = document.getElementById('password-check');
+        const passwordFeedback = document.getElementById('password-feedback');
+
+        if (passwordInput.value !== passwordCheckInput.value) {
+            passwordFeedback.textContent = '비밀번호가 일치하지 않습니다.';
+        } else {
+            passwordFeedback.textContent = '';
+        }
+    }
+
     document.getElementById('check-username').addEventListener('click', function() {
         const usernameInput = document.getElementById('username');
         const username = usernameInput.value.trim();
@@ -85,4 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
         isEmailValid = false;
         updateRegisterButtonState();
     });
+
+    document.getElementById('password').addEventListener('input', checkPasswordMatch);
+    document.getElementById('password-check').addEventListener('input', checkPasswordMatch);
 });
