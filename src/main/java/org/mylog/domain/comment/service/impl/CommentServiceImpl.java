@@ -1,0 +1,61 @@
+package org.mylog.domain.comment.service.impl;
+
+import lombok.RequiredArgsConstructor;
+import org.mylog.domain.comment.domain.Comment;
+import org.mylog.domain.comment.dto.CommentRegisterDto;
+import org.mylog.domain.comment.repository.CommentRepository;
+import org.mylog.domain.comment.service.CommentService;
+import org.mylog.domain.post.domain.Post;
+import org.mylog.domain.post.service.PostService;
+import org.mylog.domain.user.domain.User;
+import org.mylog.domain.user.service.UserService;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class CommentServiceImpl implements CommentService {
+
+    private final CommentRepository commentRepository;
+    private final UserService userService;
+    private final PostService postService;
+
+    @Override
+    public List<Comment> findCommentsByPostId(Long postId) {
+
+        return commentRepository.findCommentsByPostId(postId);
+    }
+
+    @Override
+    public Comment saveComment(CommentRegisterDto commentRegisterDto) {
+
+        User user = userService.findUserByUserId(commentRegisterDto.getUserId());
+
+        Post post = postService.findPostById(commentRegisterDto.getPostId()).orElseThrow();
+
+        Comment comment = Comment.builder()
+                .content(commentRegisterDto.getContent())
+                .commentClass(commentRegisterDto.getCommentClass())
+                .parentId(commentRegisterDto.getParentId())
+                .createdAt(LocalDateTime.now())
+                .isDeleted(false)
+                .user(user)
+                .post(post)
+                .build();
+
+        return comment;
+    }
+
+    @Override
+    public void deleteComment(Long id) {
+        if (!commentRepository.existsByParentId(id)) {
+            commentRepository.deleteById(id);
+            return;
+        }
+
+        Comment comment = commentRepository.findById(id).orElseThrow();
+        comment.deleteComment();
+    }
+}

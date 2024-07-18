@@ -20,6 +20,8 @@ public class CommentDto {
     private Boolean isDeleted;
 
     private Long userId;
+    private String nickname;
+
     private Long postId;
 
     public CommentDto(Comment comment) {
@@ -31,6 +33,7 @@ public class CommentDto {
         this.updatedAt = comment.getUpdatedAt();
         this.isDeleted = comment.getIsDeleted();
         this.userId = comment.getUser().getId();
+        this.nickname = comment.getUser().getNickname();
         this.postId = comment.getPost().getId();
     }
 }

@@ -48,4 +48,10 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
+
+    public void deleteComment() {
+        this.content = "삭제된 댓글 입니다.";
+        this.updatedAt = LocalDateTime.now();
+        this.isDeleted = true;
+    }
 }

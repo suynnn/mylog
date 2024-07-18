@@ -1,0 +1,46 @@
+package org.mylog.domain.comment.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.mylog.domain.comment.domain.Comment;
+import org.mylog.domain.comment.dto.CommentDto;
+import org.mylog.domain.comment.dto.CommentRegisterDto;
+import org.mylog.domain.comment.service.CommentService;
+import org.mylog.global.response.Message;
+import org.mylog.global.response.ResponseStatus;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.nio.charset.StandardCharsets;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/comments")
+public class CommentApiController {
+
+    private final CommentService commentService;
+
+    @PostMapping("/register")
+    public ResponseEntity<Message> registerComment(@RequestBody CommentRegisterDto commentRegisterDto) {
+
+        Comment comment = commentService.saveComment(commentRegisterDto);
+        CommentDto commentDto = new CommentDto(comment);
+
+        Message message = new Message();
+
+        message.setResponseStatus(ResponseStatus.OK);
+        message.setMessage("성공 코드");
+        message.setData(commentDto);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
+
+}
