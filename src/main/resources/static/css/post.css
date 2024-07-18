@@ -35,3 +35,21 @@ main {
     padding: 0 2rem; /* 양쪽 여백 설정 */
     max-width: 800px; /* 최대 너비 설정 */
 }
+
+.comment-write textarea {
+    width: 100%;
+}
+
+.comment-list {
+    margin-top: 2em;
+}
+
+.comment-list .comment-item {
+    padding: 1em;
+    border-bottom: 1px solid #ddd;
+}
+
+.comment-list .comment-item .comment-info {
+    font-size: 0.9em;
+    color: #6c757d;
+}

@@ -3,6 +3,7 @@ package org.mylog.domain.post.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mylog.domain.comment.dto.CommentRegisterDto;
 import org.mylog.domain.post.domain.Post;
 import org.mylog.domain.post.dto.PostDto;
 import org.mylog.domain.post.dto.PostPublishDto;
@@ -45,8 +46,6 @@ public class PostController {
             return "post/post-publish-form";
         }
 
-        log.info("postPublishDto {}", postPublishDto);
-
         Long postId = postService.publishPost(postPublishDto).getId();
 
         return "redirect:/posts/@" + userDetails.getUsername() + "/" + postId;
@@ -70,6 +69,7 @@ public class PostController {
         }
 
         model.addAttribute("postDto", new PostDto(post));
+        model.addAttribute("commentRegisterDto", new CommentRegisterDto());
 
         return "post/post";
     }
