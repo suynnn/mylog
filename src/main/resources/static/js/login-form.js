@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    if (loginError) {
+    if (loginError !== 'null') {
         alert(loginError);
     }
 });
