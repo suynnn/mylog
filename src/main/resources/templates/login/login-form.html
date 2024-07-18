@@ -13,6 +13,11 @@
     <link th:href="@{/css/fragment/navbar-fragment.css}" rel="stylesheet" />
     <link th:href="@{/css/login-form.css}" rel="stylesheet" />
 
+    <script th:inline="javascript">
+        let loginError = [[${loginError != null ? '"' + loginError + '"' : 'null'}]];
+    </script>
+
+    <script th:src="@{/js/login-form.js}"></script>
 </head>
 <body>
 <div th:replace="~{/fragment/navbar-fragment :: navbarFragment}"></div>

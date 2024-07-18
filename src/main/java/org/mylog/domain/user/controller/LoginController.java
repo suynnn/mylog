@@ -12,6 +12,7 @@ import org.mylog.domain.user.service.UserService;
 import org.mylog.global.jwt.service.RefreshTokenService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,14 +36,14 @@ public class LoginController {
     }
     @PostMapping("/login")
     public String login(LoginDto loginDto,
-                        BindingResult bindingResult,
-                        HttpServletResponse response) {
+                        HttpServletResponse response,
+                        Model model) {
 
         User user = userService.findUserByUsername(loginDto.getUsername());
 
         if (user == null || !passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
 
-            bindingResult.rejectValue("password", null, "아이디/비밀번호가 올바르지 않습니다.");
+            model.addAttribute("loginError", "아이디/비밀번호가 올바르지 않습니다.");
             return "login/login-form";
         }
 
