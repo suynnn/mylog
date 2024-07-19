@@ -25,3 +25,13 @@ spring:
 logging:
   level:
     org.hibernate.sql: debug
+
+jwt:
+  secretKey: 12345678901234567890123456789012
+  refreshKey: 12345678901234567890123456789012
+
+file:
+  dir: /Users/suyeon/Documents/공부/TECHIT/프로젝트 과제/0618 블로그 만들기/files/
+
+upload:
+  path: /upload/
