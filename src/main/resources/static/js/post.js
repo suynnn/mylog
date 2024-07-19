@@ -9,6 +9,14 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentPage = 0;
     const pageSize = 20;
 
+    function renderPostContent() {
+        const postContentElement = document.querySelector('.post-content');
+        const content = postContentElement.textContent;
+        postContentElement.innerHTML = content.replace(/\n/g, '<br/>');
+    }
+
+    renderPostContent();
+
     function fetchComments(page) {
         const postId = document.querySelector('input[name="postId"]').value;
 
