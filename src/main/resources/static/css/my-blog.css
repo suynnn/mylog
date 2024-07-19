@@ -24,6 +24,18 @@ body {
     margin-bottom: 10px;
 }
 
+.post-item {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.post-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+
 .profile-info .text-muted {
     color: #6c757d;
 }
